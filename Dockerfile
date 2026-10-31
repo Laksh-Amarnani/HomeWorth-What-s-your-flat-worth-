@@ -11,7 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # predictor.py imports train.py for the shared feature list and price conversion
-COPY app.py predictor.py train.py ./
+COPY app.py predictor.py train.py leads.py ./
 COPY templates/ templates/
 COPY static/ static/
 COPY models/ models/

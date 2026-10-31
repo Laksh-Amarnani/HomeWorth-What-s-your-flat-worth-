@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Flat price estimate{% endblock %}
+{% block bodyclass %}embed{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+<section class="hero"><div class="hero-in">{% include "_form.html" %}</div></section>
+{% include "_result.html" %}
+
+<section class="lead" id="lead" hidden>
+  <form id="lead-form" class="lead-in">
+    <h2>Want help buying or selling?</h2>
+    <p>Leave your number and {{ brand }} will call you.</p>
+    <div class="row">
+      <div><label for="lead-name">Name</label><input id="lead-name" required minlength="2" maxlength="60" autocomplete="name"></div>
+      <div><label for="lead-phone">Mobile number</label><input id="lead-phone" required inputmode="numeric" autocomplete="tel" placeholder="10 digits"></div>
+    </div>
+    <input id="lead-website" class="trap" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button class="cta" type="submit">Get a call back</button>
+    <p class="error" id="lead-msg" hidden></p>
+  </form>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>const LOCALITIES = {{ localities|tojson }}, BRAND = {{ brand|tojson }};</script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script src="{{ url_for('static', filename='embed.js') }}"></script>
+{% endblock %}

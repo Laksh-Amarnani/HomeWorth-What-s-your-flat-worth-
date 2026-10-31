@@ -1,10 +1,20 @@
+import csv
+import hmac
+import io
 import os
+import re
+import time
+from collections import defaultdict
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, Response, abort, jsonify, render_template, request
+from werkzeug.middleware.proxy_fix import ProxyFix
 
+import leads
 import predictor
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)  # Render sits behind a proxy; this gives the real IP, scheme and host
+SENT = defaultdict(list)  # ip -> times of recent leads; in memory, so per worker (we run one)
 
 
 @app.get("/")
@@ -44,6 +54,47 @@ def api_predict():
     if locality not in predictor.STATS["localities"].get(city, []):
         locality = None  # an unlisted locality is treated as unknown rather than guessed
     return jsonify(predictor.predict(city, locality, area, bedrooms, bathrooms, resale, amenities, asking))
+
+
+@app.get("/embed")
+def embed():
+    return render_template("embed.html", cities=predictor.CITIES, localities=predictor.STATS["localities"], stats=predictor.STATS, brand=request.args.get("brand", "")[:40] or "HomeWorth")
+
+
+@app.get("/for-brokers")
+def for_brokers():
+    return render_template("for_brokers.html", stats=predictor.STATS)
+
+
+@app.post("/api/lead")
+def api_lead():
+    f = request.get_json(silent=True) or {}
+    if f.get("website"):  # hidden field only bots fill in
+        return jsonify(ok=True)
+    name = str(f.get("name", "")).strip()
+    phone = re.sub(r"[\s-]", "", str(f.get("phone", ""))).removeprefix("+91")
+    if not 2 <= len(name) <= 60 or not re.fullmatch(r"[6-9]\d{9}", phone):
+        return jsonify(error="Enter your name and a 10-digit mobile number."), 400
+    recent = [t for t in SENT[request.remote_addr] if time.time() - t < 3600]
+    if len(recent) >= 5:
+        return jsonify(error="Too many requests. Please try again in an hour."), 429
+    SENT[request.remote_addr] = recent + [time.time()]
+    leads.save({"brand": str(f.get("brand", ""))[:40] or "HomeWorth", "name": name, "phone": phone,
+                **{k: str(f.get(k, ""))[:60] for k in ("city", "locality", "area_sqft", "bedrooms", "estimate_lakh")}})
+    return jsonify(ok=True)
+
+
+@app.get("/leads.csv")
+def leads_csv():
+    key = os.environ.get("ADMIN_KEY")
+    if not key or not hmac.compare_digest(request.args.get("key", ""), key):
+        abort(404)
+    out = io.StringIO()
+    w = csv.writer(out)
+    w.writerow(leads.COLUMNS)
+    # a leading = + - @ would make Excel run the cell as a formula
+    w.writerows([("'" + v if v and str(v)[0] in "=+-@" else v for v in row) for row in leads.all_rows()])
+    return Response(out.getvalue(), mimetype="text/csv")
 
 
 @app.get("/health")

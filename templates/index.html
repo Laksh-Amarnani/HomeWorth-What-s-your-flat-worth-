@@ -24,109 +24,11 @@
       </svg>
     </div>
 
-    <form id="form" class="nameplate" autocomplete="off">
-      <h2>Describe the flat</h2>
-
-      <label for="city">City</label>
-      <select id="city" name="city" required>
-        {% for c in cities %}<option>{{ c }}</option>{% endfor %}
-      </select>
-
-      <label for="locality">Locality <span class="hint" id="loc-hint"></span></label>
-      <select id="locality" name="locality"></select>
-
-      <label for="area">Size <output id="area-out">1000</output> sq ft</label>
-      <input id="area" name="area" type="range" min="300" max="5000" step="50" value="1000">
-
-      <div class="row">
-        <div>
-          <label id="bhk-label">Bedrooms</label>
-          <div class="seg" id="bedrooms" role="radiogroup" aria-labelledby="bhk-label">
-            {% for n in range(1, 6) %}<button type="button" role="radio" aria-checked="{{ 'true' if n == 2 else 'false' }}" data-v="{{ n }}" class="{{ 'on' if n == 2 }}">{{ n }}</button>{% endfor %}
-          </div>
-        </div>
-        <div>
-          <label for="bathrooms">Bathrooms</label>
-          <select id="bathrooms" name="bathrooms">
-            <option value="">Not sure</option>
-            {% for n in range(1, 6) %}<option>{{ n }}</option>{% endfor %}
-          </select>
-        </div>
-      </div>
-
-      <div class="row">
-        <div>
-          <label for="condition">Resale or new</label>
-          <select id="condition" name="condition">
-            <option value="">Not sure</option><option value="resale">Resale</option><option value="new">New</option>
-          </select>
-        </div>
-        <div>
-          <label for="amenities">Society amenities</label>
-          <select id="amenities" name="amenities">
-            <option value="unknown">Not sure</option><option value="basic">Basic: lift, security</option>
-            <option value="standard">Standard: plus gym, park</option><option value="premium">Premium: plus pool, clubhouse</option>
-          </select>
-        </div>
-      </div>
-
-      <label for="asking">Asking price <span class="hint">optional, in lakh. Add it to check if it's fair</span></label>
-      <input id="asking" name="asking" type="number" min="1" max="100000" step="any" inputmode="decimal" placeholder="e.g. 85">
-
-      <button class="cta" type="submit">Get the price</button>
-      <p class="error" id="error" role="alert" hidden></p>
-    </form>
+    {% include "_form.html" %}
   </div>
 </section>
 
-<section class="band" id="result" aria-live="polite">
-  <div class="band-in">
-    <div class="empty" id="empty">
-      <h2>Your price shows up here.</h2>
-      <p>Describe the flat above and press <b>Get the price</b>.</p>
-    </div>
-
-    <div id="out" hidden>
-      <div>
-        <p class="say">Likely price</p>
-        <div class="price" id="price"></div>
-        <div class="tape" aria-hidden="true"><div class="pin" id="dot"></div></div>
-        <div class="tape-ends"><span id="low"></span><span id="high"></span></div>
-        <p class="tape-note">Flats like this usually sell between these two prices.</p>
-
-        <div class="deal" id="deal" hidden>
-          <b id="deal-head"></b>
-          <p id="deal-body"></p>
-        </div>
-
-        <div class="stats">
-          <div class="stat"><b id="pps"></b><span>per sq ft</span></div>
-          <div class="stat"><b id="vs"></b><span id="vs-label"></span></div>
-          <div class="stat"><b id="err"></b><span id="err-label"></span></div>
-        </div>
-      </div>
-
-      <div>
-        <h3>What moved the price</h3>
-        <ul class="factors" id="factors"></ul>
-        <div class="actions">
-          <button type="button" class="ghost" id="save">Add to compare</button>
-          <button type="button" class="ghost" id="share">Copy link</button>
-        </div>
-        <h3 class="gap">Five flats like yours</h3>
-        <table>
-          <thead><tr><th>Where</th><th>Size</th><th>BHK</th><th class="r">Price</th></tr></thead>
-          <tbody id="similar"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div id="compare" hidden>
-      <h3>Compare flats</h3>
-      <div class="scroll"><table id="compare-table"></table></div>
-    </div>
-  </div>
-</section>
+{% include "_result.html" %}
 
 <section class="how">
   <h2>Where the numbers come from</h2>

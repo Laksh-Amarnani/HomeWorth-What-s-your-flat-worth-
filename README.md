@@ -3,7 +3,9 @@
 Describe a flat (city, locality, area, bedrooms, bathrooms, condition, amenities) and get:
 
 - an **estimated price**, with an **80% likely range** and the price per sq ft against the city median
-- the **five most similar listings**
+- a **deal check**: add an asking price and it says if it is fair, with where to open and where to stop
+- **what moved the price**: what the locality, condition, amenities and bathrooms each add
+- the **five most similar listings**, a **compare** table for up to three flats, and a **link** that reopens the same estimate
 - a **market dashboard**: price per sq ft by city, price by bedrooms, what drives price, priciest localities, and where the model is least accurate
 
 ## How it works
@@ -23,6 +25,18 @@ Describe a flat (city, locality, area, bedrooms, bathrooms, condition, amenities
 | 80% range contains the true price | 78.9% of the time |
 
 Accuracy differs by city; see "Where the model is less sure" on the dashboard. Mumbai and Kolkata are weakest because the Kaggle city files are noisy. Localities are only available for the six metros in those files; other cities are estimated at city level. The held-out listings are cleaned the same way as the training data, so errors on unusual listings will be larger.
+
+## Broker widget
+
+`/for-brokers` gives a one-line `<iframe>` that puts the estimator on a broker's own site. Visitors who get an estimate can leave a name and number; the lead is saved and sent to a webhook.
+
+| Setting | What it does |
+|---|---|
+| `LEAD_WEBHOOK_URL` | A Slack or Discord incoming-webhook URL. Each lead is posted there. This is the copy that survives restarts. |
+| `ADMIN_KEY` | Opens `/leads.csv?key=...` to download every lead. Without it that page returns 404. |
+| `LEADS_DB` | Where the SQLite file lives. The default is the temp folder, which Render's free plan wipes on restart. |
+
+Leads are limited to 5 per IP per hour, and a hidden field catches simple bots.
 
 ## Run locally
 
@@ -81,5 +95,6 @@ app.py            predictor.py    Flask app and prediction logic
 templates/ static/                pages, styles, charts (Chart.js is bundled, so it works offline)
 models/                           trained model, metrics and dashboard stats
 data/clean/                       cleaned listings used by the app
-Dockerfile  render.yaml               container and Render settings
+leads.py                          lead storage and webhook for the broker widget
+Dockerfile  render.yaml           container and Render settings
 ```

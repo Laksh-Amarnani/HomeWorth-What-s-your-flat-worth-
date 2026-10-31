@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}HomeWorth for brokers{% endblock %}
+{% block content %}
+<main class="page">
+  <h1>Put a price estimator on your website.</h1>
+  <p>Visitors describe their flat and get an instant price. They leave their name and number to hear from you.</p>
+
+  <div class="broker">
+    <div>
+      <h2>Add it to your site</h2>
+      <p>Paste this where you want it to appear. Replace <b>Your Agency</b> with your name, so you can tell your leads apart.</p>
+      <textarea id="snippet" readonly rows="5">&lt;iframe src="{{ request.host_url }}embed?brand=Your+Agency" width="100%" height="1000" style="border:0" title="Home price estimator"&gt;&lt;/iframe&gt;</textarea>
+      <button type="button" class="cta small" id="copy">Copy code</button>
+      <p class="hint">Leads arrive in your Slack or Discord channel as they come in, once the site owner connects a webhook.</p>
+    </div>
+    <iframe src="/embed?brand=Your+Agency" title="Preview of the estimator" height="760"></iframe>
+  </div>
+</main>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById("copy").addEventListener("click", async (e) => {
+  const b = e.currentTarget;
+  try { await navigator.clipboard.writeText(document.getElementById("snippet").value); b.textContent = "Copied"; }
+  catch { document.getElementById("snippet").select(); }
+  setTimeout(() => (b.textContent = "Copy code"), 2000);
+});
+</script>
+{% endblock %}

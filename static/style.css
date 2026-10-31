@@ -103,6 +103,24 @@ th:not(:first-child), td:not(:first-child) { white-space: nowrap; padding-left: 
 #compare tbody th, #compare tr:not(:first-child) th { color: var(--lilac); font-weight: 600; }
 input[type=number] { width: 100%; background: var(--white); color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; padding: 10px 12px; font: inherit; font-weight: 500; }
 
+/* ---------- broker widget ---------- */
+.embed .hero { padding: 20px max(12px, 3vw) 28px; }
+.embed .hero-in { grid-template-columns: 1fr; max-width: 520px; gap: 0; }
+.embed .nameplate { margin-bottom: 0; }
+.embed .band { padding: 36px max(12px, 3vw); }
+.lead { background: var(--gold); border-top: 3px solid var(--ink); padding: 32px max(12px, 3vw); }
+.lead-in { max-width: 520px; margin: 0 auto; }
+.lead h2 { font-size: 1.7rem; font-weight: 800; }
+.lead p { margin: 6px 0 0; }
+.lead input:not(.trap) { width: 100%; background: var(--white); color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; padding: 10px 12px; font: inherit; font-weight: 500; }
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; }
+.broker { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 36px 0 0; align-items: start; }
+.broker h2 { font-size: 1.7rem; font-weight: 800; margin-bottom: 8px; }
+.broker textarea { width: 100%; font: .9rem/1.4 ui-monospace, Consolas, monospace; padding: 10px; border: 2px solid var(--ink); border-radius: 4px; background: var(--white); color: var(--ink); resize: vertical; }
+.broker iframe { width: 100%; border: 3px solid var(--ink); box-shadow: 9px 9px 0 var(--ink); background: var(--paper); }
+.cta.small { width: auto; padding: 10px 20px; font-size: 1rem; margin-top: 12px; }
+@media (max-width: 960px) { .broker { grid-template-columns: 1fr; } }
+
 /* ---------- where the numbers come from ---------- */
 .how { max-width: calc(1160px + 2 * max(16px, 4vw)); margin: 0 auto; padding: 64px max(16px, 4vw) 24px; }
 .how h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); font-weight: 800; margin-bottom: 26px; max-width: 16ch; }

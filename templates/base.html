@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='fonts/fonts.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-  <header class="nav {% block navclass %}{% endblock %}">
+<body class="{% block bodyclass %}{% endblock %}">
+  {% block header %}<header class="nav {% block navclass %}{% endblock %}">
     <a class="brand" href="/">
       <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" fill="#1F1A5C"/><path d="M6 16 16 7l10 9v10H6z" fill="#F0306E" stroke="#FFB400" stroke-width="2.5" stroke-linejoin="round"/></svg>
       HomeWorth
@@ -18,12 +18,13 @@
     <nav>
       <a href="/" {% if request.path == '/' %}aria-current="page"{% endif %}>Estimate a flat</a>
       <a href="/dashboard" {% if request.path == '/dashboard' %}aria-current="page"{% endif %}>Market dashboard</a>
+      <a href="/for-brokers" {% if request.path == '/for-brokers' %}aria-current="page"{% endif %}>For brokers</a>
     </nav>
-  </header>
+  </header>{% endblock %}
   {% block content %}{% endblock %}
-  <footer>
+  {% block footer %}<footer>
     <p>Prices come from {{ '{:,}'.format(stats.total_listings) }} listings in {{ stats.cities|length }} cities. Use them to start a negotiation, not to end one.</p>
-  </footer>
+  </footer>{% endblock %}
   {% block scripts %}{% endblock %}
 </body>
 </html>

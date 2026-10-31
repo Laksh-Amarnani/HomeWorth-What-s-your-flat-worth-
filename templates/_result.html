@@ -1,0 +1,48 @@
+<section class="band" id="result" aria-live="polite">
+  <div class="band-in">
+    <div class="empty" id="empty">
+      <h2>Your price shows up here.</h2>
+      <p>Describe the flat above and press <b>Get the price</b>.</p>
+    </div>
+
+    <div id="out" hidden>
+      <div>
+        <p class="say">Likely price</p>
+        <div class="price" id="price"></div>
+        <div class="tape" aria-hidden="true"><div class="pin" id="dot"></div></div>
+        <div class="tape-ends"><span id="low"></span><span id="high"></span></div>
+        <p class="tape-note">Flats like this usually sell between these two prices.</p>
+
+        <div class="deal" id="deal" hidden>
+          <b id="deal-head"></b>
+          <p id="deal-body"></p>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><b id="pps"></b><span>per sq ft</span></div>
+          <div class="stat"><b id="vs"></b><span id="vs-label"></span></div>
+          <div class="stat"><b id="err"></b><span id="err-label"></span></div>
+        </div>
+      </div>
+
+      <div>
+        <h3>What moved the price</h3>
+        <ul class="factors" id="factors"></ul>
+        <div class="actions">
+          <button type="button" class="ghost" id="save">Add to compare</button>
+          <button type="button" class="ghost" id="share">Copy link</button>
+        </div>
+        <h3 class="gap">Five flats like yours</h3>
+        <table>
+          <thead><tr><th>Where</th><th>Size</th><th>BHK</th><th class="r">Price</th></tr></thead>
+          <tbody id="similar"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="compare" hidden>
+      <h3>Compare flats</h3>
+      <div class="scroll"><table id="compare-table"></table></div>
+    </div>
+  </div>
+</section>

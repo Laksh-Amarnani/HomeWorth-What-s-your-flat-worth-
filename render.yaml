@@ -6,3 +6,8 @@ services:
     region: singapore        # closest Render region to India
     healthCheckPath: /health
     autoDeployTrigger: commit
+    envVars:
+      - key: ADMIN_KEY
+        generateValue: true   # read it from the Render dashboard, then open /leads.csv?key=...
+      - key: LEAD_WEBHOOK_URL
+        sync: false           # paste a Slack or Discord webhook URL in the dashboard
