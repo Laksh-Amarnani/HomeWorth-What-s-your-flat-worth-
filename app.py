@@ -27,6 +27,7 @@ def api_predict():
         locality = f.get("locality") or None
         amenities = f.get("amenities", "unknown")
         resale = {"resale": 1, "new": 0}.get(f.get("condition"))
+        asking = float(f["asking"]) if f.get("asking") else None
     except (KeyError, ValueError, TypeError):
         return jsonify(error="Please fill in city, area and bedrooms with valid numbers."), 400
 
@@ -36,11 +37,13 @@ def api_predict():
         return jsonify(error="Area must be between 200 and 10,000 sq ft."), 400
     if not 1 <= bedrooms <= 8 or (bathrooms is not None and not 1 <= bathrooms <= 8):
         return jsonify(error="Bedrooms and bathrooms must be between 1 and 8."), 400
+    if asking is not None and not 1 <= asking <= 100000:
+        return jsonify(error="Asking price must be between 1 and 100,000 lakh."), 400
     if amenities not in predictor.AMENITY_LEVELS:
         return jsonify(error="Unknown amenities level."), 400
     if locality not in predictor.STATS["localities"].get(city, []):
         locality = None  # an unlisted locality is treated as unknown rather than guessed
-    return jsonify(predictor.predict(city, locality, area, bedrooms, bathrooms, resale, amenities))
+    return jsonify(predictor.predict(city, locality, area, bedrooms, bathrooms, resale, amenities, asking))
 
 
 @app.get("/health")

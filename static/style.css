@@ -83,6 +83,26 @@ td:last-child { font-family: var(--display); font-weight: 800; font-size: 1.15re
 .r { text-align: right; font-variant-numeric: tabular-nums; }
 th:not(:first-child), td:not(:first-child) { white-space: nowrap; padding-left: 10px; }  /* only the locality may wrap */
 
+
+/* ---------- deal check, price factors, compare ---------- */
+.deal { margin-top: 26px; padding: 14px 16px; background: rgba(255,255,255,.08); border-left: 8px solid var(--c); }
+.deal.teal { --c: #5DE2C8; } .deal.gold { --c: var(--gold); } .deal.pink { --c: #FF8FAE; }
+.deal b { font: 800 1.2rem var(--display); letter-spacing: -.01em; }
+.deal p { margin: 4px 0 0; color: var(--lilac); }
+.factors { list-style: none; margin: 0 0 18px; padding: 0; }
+.factors li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.22); font-weight: 500; }
+.factors b { font-family: var(--display); font-weight: 800; white-space: nowrap; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.ghost { background: transparent; color: var(--white); border: 2px solid var(--white); border-radius: 4px; padding: 8px 14px; font: 700 .95rem var(--body); cursor: pointer; }
+.ghost:hover { background: var(--white); color: var(--ink); }
+.ghost.small { padding: 3px 8px; font-size: .8rem; margin-top: 6px; }
+.band h3.gap { margin-top: 30px; }
+#compare { margin-top: 48px; }
+.scroll { overflow-x: auto; }
+#compare th, #compare td { white-space: normal; vertical-align: top; }
+#compare tbody th, #compare tr:not(:first-child) th { color: var(--lilac); font-weight: 600; }
+input[type=number] { width: 100%; background: var(--white); color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; padding: 10px 12px; font: inherit; font-weight: 500; }
+
 /* ---------- where the numbers come from ---------- */
 .how { max-width: calc(1160px + 2 * max(16px, 4vw)); margin: 0 auto; padding: 64px max(16px, 4vw) 24px; }
 .how h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); font-weight: 800; margin-bottom: 26px; max-width: 16ch; }

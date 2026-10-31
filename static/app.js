@@ -15,32 +15,39 @@ function fillLocalities() {
 
 $("city").addEventListener("change", fillLocalities);
 $("area").addEventListener("input", (e) => ($("area-out").textContent = e.target.value));
+function setBedrooms(n) {
+  bedrooms = n;
+  document.querySelectorAll("#bedrooms button").forEach((x) => {
+    const on = +x.dataset.v === n;
+    x.classList.toggle("on", on);
+    x.setAttribute("aria-checked", on);
+  });
+}
 $("bedrooms").addEventListener("click", (e) => {
   const b = e.target.closest("button");
-  if (!b) return;
-  bedrooms = +b.dataset.v;
-  document.querySelectorAll("#bedrooms button").forEach((x) => {
-    x.classList.toggle("on", x === b);
-    x.setAttribute("aria-checked", x === b);
-  });
+  if (b) setBedrooms(+b.dataset.v);
+});
+
+const inputs = () => ({
+  city: $("city").value, locality: $("locality").value, area: $("area").value, bedrooms,
+  bathrooms: $("bathrooms").value, condition: $("condition").value, amenities: $("amenities").value,
+  asking: $("asking").value,
 });
 
 $("form").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const btn = e.submitter, err = $("error");
+  const btn = e.currentTarget.querySelector(".cta"), err = $("error");
   btn.disabled = true; btn.textContent = "Working it out…"; err.hidden = true;
   try {
     const res = await fetch("/api/predict", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        city: $("city").value, locality: $("locality").value, area: $("area").value, bedrooms,
-        bathrooms: $("bathrooms").value, condition: $("condition").value, amenities: $("amenities").value,
-      }),
+      body: JSON.stringify(inputs()),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Something went wrong. Try again.");
     show(data);
+    document.dispatchEvent(new CustomEvent("estimate", { detail: { d: data, inputs: inputs() } }));
   } catch (ex) {
     err.textContent = ex.message; err.hidden = false;
   } finally {
@@ -79,7 +86,92 @@ function show(d) {
     });
     return tr;
   }));
+  showDeal(d.deal);
+  showFactors(d.factors);
   $("result").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
 }
 
+const signed = (lakh) => `${lakh > 0 ? "+" : "−"}${fmt(Math.abs(lakh))}`;
+
+function showDeal(deal) {
+  const box = $("deal");
+  box.hidden = !deal;
+  if (!deal) return;
+  const c = { under: ["Priced below the usual range", "teal"], fair: ["A fair ask", "teal"], high: ["A bit high", "gold"], over: ["Overpriced", "pink"] }[deal.verdict];
+  box.className = `deal ${c[1]}`;
+  $("deal-head").textContent = `${c[0]}: ${fmt(deal.asking_lakh)} is ${Math.abs(deal.diff_pct)}% ${deal.diff_pct < 0 ? "below" : "above"} our estimate`;
+  $("deal-body").textContent = deal.verdict === "under"
+    ? "Good news, but ask why. Age, floor, legal papers or condition could explain it."
+    : `Open around ${fmt(deal.open_lakh)} and don't go above ${fmt(deal.limit_lakh)}. Our estimate is usually off by about ${$("err").textContent.replace("±", "")}, so treat this as a guide.`;
+}
+
+function showFactors(factors) {
+  const items = factors.map((f) => {
+    const li = document.createElement("li");
+    const name = document.createElement("span"), val = document.createElement("b");
+    name.textContent = `${f.label} (vs ${f.versus})`;
+    val.textContent = signed(f.effect_lakh); val.className = f.effect_lakh > 0 ? "up" : "down";
+    li.append(name, val);
+    return li;
+  });
+  if (!items.length) { const li = document.createElement("li"); li.textContent = "Pick a locality, condition or amenities to see what each one adds."; items.push(li); }
+  $("factors").replaceChildren(...items);
+}
+
+// compare up to three flats side by side; kept in the page only
+let saved = [], last = null;
+document.addEventListener("estimate", (e) => (last = e.detail));
+$("save").addEventListener("click", () => {
+  if (!last) return;
+  const i = last.inputs;
+  saved = [...saved.slice(-2), { label: `${i.bedrooms} BHK, ${i.area} sq ft, ${i.locality || i.city}`, d: last.d }];
+  renderCompare();
+});
+
+function renderCompare() {
+  $("compare").hidden = !saved.length;
+  const rows = [
+    ["Likely price", (d) => fmt(d.price_lakh)],
+    ["Usual range", (d) => `${fmt(d.low_lakh)} to ${fmt(d.high_lakh)}`],
+    ["Per sq ft", (d) => `₹ ${d.price_per_sqft.toLocaleString("en-IN")}`],
+    ["Vs city median", (d) => `${d.vs_city_pct > 0 ? "+" : ""}${d.vs_city_pct}%`],
+  ];
+  const table = $("compare-table");
+  const head = document.createElement("tr");
+  head.append(document.createElement("th"));
+  saved.forEach((s, n) => {
+    const th = document.createElement("th"), rm = document.createElement("button");
+    rm.type = "button"; rm.className = "ghost small"; rm.textContent = "Remove";
+    rm.addEventListener("click", () => { saved.splice(n, 1); renderCompare(); });
+    th.append(s.label, document.createElement("br"), rm);
+    head.append(th);
+  });
+  table.replaceChildren(head, ...rows.map(([name, f]) => {
+    const tr = document.createElement("tr"), th = document.createElement("th");
+    th.textContent = name; tr.append(th);
+    saved.forEach((s) => { const td = document.createElement("td"); td.textContent = f(s.d); tr.append(td); });
+    return tr;
+  }));
+}
+
+// a link carries the form, so opening it fills the form and shows the same estimate
+$("share").addEventListener("click", async () => {
+  const q = new URLSearchParams(Object.entries(inputs()).filter(([, v]) => v !== ""));
+  const url = `${location.origin}/?${q}`, btn = $("share");
+  try { await navigator.clipboard.writeText(url); btn.textContent = "Link copied"; }
+  catch { $("error").textContent = url; $("error").hidden = false; }
+  setTimeout(() => (btn.textContent = "Copy link"), 2000);
+});
+
+function fromLink() {
+  const q = new URLSearchParams(location.search);
+  if (!q.has("city")) return;
+  $("city").value = q.get("city"); fillLocalities();
+  for (const k of ["locality", "area", "bathrooms", "condition", "amenities", "asking"]) if (q.has(k)) $(k).value = q.get(k);
+  $("area-out").textContent = $("area").value;
+  setBedrooms(+q.get("bedrooms") || 2);
+  $("form").requestSubmit();
+}
+
 fillLocalities();
+fromLink();

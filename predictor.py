@@ -30,9 +30,8 @@ def similar(city, locality, area, bedrooms, n=5):
     return pool.loc[dist.nsmallest(n).index, cols].round(1).replace({np.nan: None}).to_dict("records")
 
 
-def predict(city, locality, area, bedrooms, bathrooms, resale, amenities):
-    """locality / bathrooms / resale may be None (unknown); the model handles missing values."""
-    row = pd.DataFrame([{
+def _row(city, locality, area, bedrooms, bathrooms, resale, amenities):
+    return pd.DataFrame([{
         "city": city,
         "place": f"{city}|{locality or '-'}",
         "area_sqft": area,
@@ -41,8 +40,41 @@ def predict(city, locality, area, bedrooms, bathrooms, resale, amenities):
         "resale": np.nan if resale is None else resale,
         "amenity_count": AMENITY_LEVELS[amenities],
     }])[FEATURES]
+
+
+def explain(city, locality, area, bedrooms, bathrooms, resale, amenities, mid):
+    """What each detail the user gave adds to the price, versus a typical value for just that detail."""
+    args = dict(city=city, locality=locality, area=area, bedrooms=bedrooms, bathrooms=bathrooms, resale=resale, amenities=amenities)
+    checks = []  # (field, label, typical value, what 'typical' means)
+    if locality: checks.append(("locality", f"Locality: {locality}", None, f"an average {city} locality"))
+    if amenities not in ("unknown", "standard"): checks.append(("amenities", f"{amenities.capitalize()} amenities", "standard", "standard amenities"))
+    if resale is not None: checks.append(("resale", "Resale" if resale else "New", 1 - resale, "new" if resale else "resale"))
+    if bathrooms is not None and bathrooms != bedrooms: checks.append(("bathrooms", f"{bathrooms} bathroom{'s' * (bathrooms > 1)}", bedrooms, f"{bedrooms} bathroom{'s' * (bedrooms > 1)}"))
+    out = []
+    for field, label, typical, versus in checks:
+        base = to_price(MODELS["point"].predict(_row(**{**args, field: typical}))[0], area)
+        out.append({"label": label, "versus": versus, "effect_lakh": round(mid - float(base), 1)})
+    return sorted(out, key=lambda e: -abs(e["effect_lakh"]))
+
+
+def deal(asking, lo, mid, hi):
+    """Compares an asking price with the model's range and suggests where to start and stop negotiating."""
+    verdict = "under" if asking < lo else "fair" if asking <= mid * 1.05 else "high" if asking <= hi else "over"
+    return {
+        "verdict": verdict,
+        "asking_lakh": round(asking, 1),
+        "diff_lakh": round(asking - mid, 1),
+        "diff_pct": round((asking / mid - 1) * 100),
+        "open_lakh": round(min(asking, (lo + mid) / 2), 1),
+        "limit_lakh": round(min(asking, hi), 1),
+    }
+
+
+def predict(city, locality, area, bedrooms, bathrooms, resale, amenities, asking=None):
+    """locality / bathrooms / resale may be None (unknown); the model handles missing values."""
+    row = _row(city, locality, area, bedrooms, bathrooms, resale, amenities)
     # sorted so the quantile models can never produce a low above the high
-    lo, mid, hi = sorted(to_price(MODELS[k].predict(row)[0], area) for k in ("lo", "point", "hi"))
+    lo, mid, hi = sorted(float(to_price(MODELS[k].predict(row)[0], area)) for k in ("lo", "point", "hi"))
     pps = mid * 1e5 / area
     return {
         "price_lakh": round(mid, 1),
@@ -53,4 +85,6 @@ def predict(city, locality, area, bedrooms, bathrooms, resale, amenities):
         "vs_city_pct": round((pps / CITY_PPS[city] - 1) * 100),
         "typical_error_pct": METRICS["median_error_pct_by_city"][city],
         "similar": similar(city, locality, area, bedrooms),
+        "factors": explain(city, locality, area, bedrooms, bathrooms, resale, amenities, mid),
+        "deal": deal(asking, lo, mid, hi) if asking else None,
     }
