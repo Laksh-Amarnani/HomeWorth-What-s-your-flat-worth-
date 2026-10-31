@@ -4,6 +4,7 @@ Describe a flat (city, locality, area, bedrooms, bathrooms, condition, amenities
 
 - an **estimated price**, with an **80% likely range** and the price per sq ft against the city median
 - a **deal check**: add an asking price and it says if it is fair, with where to open and where to stop
+- **rent and yield** for the six big metros: monthly rent, the yearly return on the price, and years of rent to repay it
 - **what moved the price**: what the locality, condition, amenities and bathrooms each add
 - the **five most similar listings**, a **compare** table for up to three flats, and a **link** that reopens the same estimate
 - a **market dashboard**: price per sq ft by city, price by bedrooms, what drives price, priciest localities, and where the model is least accurate
@@ -12,8 +13,8 @@ Describe a flat (city, locality, area, bedrooms, bathrooms, condition, amenities
 
 | Step | File | What it does |
 |---|---|---|
-| 1. Data | `prepare_data.py` | Merges the six Kaggle city files (amenities and localities) with the 187k-row listings file (35 cities). Parses Lac/Cr prices and sqft/sqyd/sqm areas, treats amenity value `9` as "not available", removes duplicates, impossible homes and outliers. |
-| 2. Model | `train.py` | Gradient boosting on log price per sq ft. City and locality are target-encoded (1,700+ localities, no one-hot columns). Two more models predict the 10th and 90th percentile for the range. |
+| 1. Data | `prepare_data.py` | Merges the six Kaggle city files (amenities and localities) with the 187k-row listings file (35 cities), and cleans the 4,700-rental rent file. Parses Lac/Cr prices and sqft/sqyd/sqm areas, treats amenity value `9` as "not available", removes duplicates, impossible homes and outliers. |
+| 2. Model | `train.py` | Gradient boosting on log price per sq ft. City and locality are target-encoded (1,700+ localities, no one-hot columns). Two more models predict the 10th and 90th percentile for the range. A second model of the same kind predicts rent. |
 | 3. App | `app.py`, `predictor.py` | Flask: `/` estimator, `/dashboard`, `/api/predict`, `/health`. |
 
 ### Results (held-out 20% of listings)
@@ -23,8 +24,10 @@ Describe a flat (city, locality, area, bedrooms, bathrooms, condition, amenities
 | R² (log price) | 0.80 |
 | Typical error | 20% |
 | 80% range contains the true price | 78.9% of the time |
+| Rent: R² (log rent) | 0.87 |
+| Rent: typical error | 19% |
 
-Accuracy differs by city; see "Where the model is less sure" on the dashboard. Mumbai and Kolkata are weakest because the Kaggle city files are noisy. Localities are only available for the six metros in those files; other cities are estimated at city level. The held-out listings are cleaned the same way as the training data, so errors on unusual listings will be larger.
+Accuracy differs by city; see "Where the model is less sure" on the dashboard. Mumbai and Kolkata are weakest because the Kaggle city files are noisy. Rent covers the six metros only and comes from 2022 listings, for a semi-furnished flat. Mumbai's yield looks high (about 7% against 3 to 4% elsewhere) because its sale listings are cheap next to its rents, so the app warns about it. Localities are only available for the six metros in those files; other cities are estimated at city level. The held-out listings are cleaned the same way as the training data, so errors on unusual listings will be larger.
 
 ## Broker widget
 
@@ -54,10 +57,11 @@ Download these Kaggle datasets into `data/raw/` (not committed):
 
 - *Housing Prices in Metropolitan Areas of India* (ruchi798): `Bangalore.csv`, `Chennai.csv`, `Delhi.csv`, `Hyderabad.csv`, `Kolkata.csv`, `Mumbai.csv`
 - *House Price* (juhibhojani): `house_prices.csv`
+- *House Rent Prediction Dataset* (Sourav Banerjee): `House_Rent_Dataset.csv`
 
 ```bash
-python prepare_data.py     # -> data/clean/listings.csv.gz
-python train.py            # -> models/ (fails if R² drops below 0.65)
+python prepare_data.py     # -> data/clean/listings.csv.gz and rents.csv.gz
+python train.py            # -> models/ (fails if sale R² drops below 0.65 or rent R² below 0.5)
 ```
 
 ## Deploy to Render (free)

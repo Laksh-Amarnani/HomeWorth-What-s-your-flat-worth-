@@ -1,6 +1,6 @@
 """Train the price model and build the stats the dashboard shows.
 
-Run: python train.py   ->  models/model.joblib, models/metrics.json, models/stats.json
+Run: python train.py   ->  models/model.joblib, models/rent.joblib, models/metrics.json, models/stats.json
 """
 import json
 from pathlib import Path
@@ -20,6 +20,7 @@ OUT = Path("models")
 NUMERIC = ["area_sqft", "bedrooms", "bathrooms", "resale", "amenity_count"]
 FEATURES = ["city", "place"] + NUMERIC
 MIN_LOCALITY_ROWS = 10
+RENT_FEATURES = ["city", "place", "area_sqft", "bedrooms", "bathrooms", "furnishing"]
 
 
 def to_price(lpps, area):
@@ -62,6 +63,31 @@ def evaluate(models, X, y, city):
     }
 
 
+def add_rent_place(df: pd.DataFrame) -> pd.DataFrame:
+    """Rent localities have their own spellings, so they match ours by lower-cased name."""
+    return df.assign(place=df["city"] + "|" + df["locality"].str.lower())
+
+
+def evaluate_rent(models, X, y):
+    lo, p, hi = (models[k].predict(X) for k in ("lo", "point", "hi"))
+    actual, pred = np.exp(y) * X["area_sqft"], np.exp(p) * X["area_sqft"]
+    return {
+        "r2_log": round(r2_score(np.log(actual), np.log(pred)), 3),
+        "median_error_pct": round(float(np.median(np.abs(pred - actual) / actual)) * 100, 1),
+        "range_coverage_pct": round(float(np.mean((y >= lo) & (y <= hi))) * 100, 1),
+    }
+
+
+def build_rent_stats(rent, listings):
+    """City yield = a year of median rent per sqft over median sale price per sqft (rents are from 2022)."""
+    sale = (listings["price_lakh"] * 1e5 / listings["area_sqft"]).groupby(listings["city"]).median()
+    rent_pps = (rent["rent"] / rent["area_sqft"]).groupby(rent["city"]).median()
+    return {
+        "city_yield_pct": {c: round(float(rent_pps[c] * 12 / sale[c] * 100), 1) for c in rent_pps.index},
+        "rent_localities": {c: sorted(g["locality"].str.lower().unique()) for c, g in rent.groupby("city")},
+    }
+
+
 def build_stats(df, models, X_test, y_test):
     df = df.assign(pps=df["price_lakh"] * 1e5 / df["area_sqft"])
     cities = df.groupby("city").agg(listings=("pps", "size"), median_price_lakh=("price_lakh", "median"), median_pps=("pps", "median"))
@@ -93,9 +119,18 @@ if __name__ == "__main__":
     print(json.dumps(metrics, indent=1))
     assert metrics["r2_log"] > 0.65, "model is worse than expected, check the data"
 
-    models = fit_all(X, y)  # production model sees every listing
+    rent = add_rent_place(pd.read_csv("data/clean/rents.csv.gz"))
+    Xr, yr = rent[RENT_FEATURES], np.log(rent["rent"] / rent["area_sqft"])
+    Xr_tr, Xr_te, yr_tr, yr_te = train_test_split(Xr, yr, test_size=0.2, random_state=0)
+    metrics["rent"] = evaluate_rent(fit_all(Xr_tr, yr_tr), Xr_te, yr_te)
+    print("rent:", metrics["rent"])
+    assert metrics["rent"]["r2_log"] > 0.5, "rent model is worse than expected, check the data"
+
+    models = fit_all(X, y)  # production models see every listing
     OUT.mkdir(exist_ok=True)
     joblib.dump(models, OUT / "model.joblib", compress=3)
+    joblib.dump(fit_all(Xr, yr), OUT / "rent.joblib", compress=3)
     (OUT / "metrics.json").write_text(json.dumps(metrics, indent=1))
-    (OUT / "stats.json").write_text(json.dumps(build_stats(df, models, X_te, y_te), indent=1))
+    stats = build_stats(df, models, X_te, y_te) | build_rent_stats(rent, df)
+    (OUT / "stats.json").write_text(json.dumps(stats, indent=1))
     print("saved to", OUT)

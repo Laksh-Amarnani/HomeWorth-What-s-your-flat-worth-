@@ -6,11 +6,12 @@ import joblib
 import numpy as np
 import pandas as pd
 
-from train import FEATURES, to_price
+from train import FEATURES, RENT_FEATURES, to_price
 
 ROOT = Path(__file__).parent
 # safe: models/model.joblib is written by our own train.py, never uploaded by users
 MODELS = joblib.load(ROOT / "models" / "model.joblib")
+RENT_MODELS = joblib.load(ROOT / "models" / "rent.joblib")
 STATS = json.loads((ROOT / "models" / "stats.json").read_text())
 METRICS = json.loads((ROOT / "models" / "metrics.json").read_text())
 LISTINGS = pd.read_csv(ROOT / "data" / "clean" / "listings.csv.gz", low_memory=False)
@@ -57,6 +58,27 @@ def explain(city, locality, area, bedrooms, bathrooms, resale, amenities, mid):
     return sorted(out, key=lambda e: -abs(e["effect_lakh"]))
 
 
+def rent(city, locality, area, bedrooms, bathrooms, price_lakh):
+    """Monthly rent for a semi-furnished flat, and the yield on the price (the asking price if given). None outside the six metros."""
+    if city not in STATS["city_yield_pct"]:
+        return None
+    known = locality and locality.lower() in STATS["rent_localities"][city]
+    row = pd.DataFrame([{
+        "city": city, "place": f"{city}|{locality.lower() if known else '-'}", "area_sqft": area, "bedrooms": bedrooms,
+        "bathrooms": bathrooms or bedrooms, "furnishing": 1,  # bathrooms: as many as bedrooms when unknown
+    }])[RENT_FEATURES]
+    lo, mid, hi = sorted(float(np.exp(RENT_MODELS[k].predict(row)[0]) * area) for k in ("lo", "point", "hi"))
+    city_yield = STATS["city_yield_pct"][city]
+    return {
+        "rent": round(mid, -2), "low": round(lo, -2), "high": round(hi, -2),
+        "yield_pct": round(mid * 12 / (price_lakh * 1e5) * 100, 1),
+        "city_yield_pct": city_yield,
+        "years_to_repay": round(price_lakh * 1e5 / (mid * 12)),
+        # shortcut: 6% is a sanity cap on gross yield; a city above it has sale listings cheap next to its rents, so its yield is shaky
+        "shaky": city_yield > 6,
+    }
+
+
 def deal(asking, lo, mid, hi):
     """Compares an asking price with the model's range and suggests where to start and stop negotiating."""
     verdict = "under" if asking < lo else "fair" if asking <= mid * 1.05 else "high" if asking <= hi else "over"
@@ -87,4 +109,5 @@ def predict(city, locality, area, bedrooms, bathrooms, resale, amenities, asking
         "similar": similar(city, locality, area, bedrooms),
         "factors": explain(city, locality, area, bedrooms, bathrooms, resale, amenities, mid),
         "deal": deal(asking, lo, mid, hi) if asking else None,
+        "rent": rent(city, locality, area, bedrooms, bathrooms, asking or mid),
     }

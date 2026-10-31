@@ -1,6 +1,6 @@
 """Merge the Kaggle city files and the 187k-row listings file into one clean table.
 
-Run: python prepare_data.py   ->  data/clean/listings.csv.gz
+Run: python prepare_data.py   ->  data/clean/listings.csv.gz and data/clean/rents.csv.gz
 """
 from pathlib import Path
 
@@ -83,7 +83,30 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     return df[df.groupby("city")["city"].transform("size") >= MIN_CITY_ROWS].reset_index(drop=True)
 
 
+def rents() -> pd.DataFrame:
+    """House_Rent_Dataset.csv: ~4,700 rentals in the six metros, posted April to July 2022."""
+    d = pd.read_csv(RAW / "House_Rent_Dataset.csv").drop_duplicates()
+    d = pd.DataFrame({
+        "city": d["City"].replace(CITY_NAMES | {"Bangalore": "Bengaluru"}),
+        "locality": d["Area Locality"].str.strip(),
+        "area_sqft": d["Size"],
+        "bedrooms": d["BHK"],
+        "bathrooms": d["Bathroom"],
+        "furnishing": d["Furnishing Status"].map({"Unfurnished": 0, "Semi-Furnished": 1, "Furnished": 2}),
+        "rent": d["Rent"],
+    })
+    d = d[d["area_sqft"].between(200, 8000) & d["bedrooms"].between(1, 8) & d["rent"].between(1000, 1_000_000)]
+    rps = np.log(d["rent"] / d["area_sqft"])
+    g = rps.groupby(d["city"])
+    return d[(rps >= g.transform(lambda s: s.quantile(0.01))) & (rps <= g.transform(lambda s: s.quantile(0.99)))].reset_index(drop=True)
+
+
 if __name__ == "__main__":
+    r = rents()
+    assert r[["city", "area_sqft", "bedrooms", "rent", "furnishing"]].notna().all().all()
+    OUT.mkdir(parents=True, exist_ok=True)
+    r.to_csv(OUT / "rents.csv.gz", index=False)
+    print(f"{len(r):,} rentals in {r['city'].nunique()} cities")
     df = clean(pd.concat([city_files(), listings_file()], ignore_index=True))
     assert df[["city", "area_sqft", "bedrooms", "price_lakh"]].notna().all().all()
     assert df["price_lakh"].between(5, 5000).all()

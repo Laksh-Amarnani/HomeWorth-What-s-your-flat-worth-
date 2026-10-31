@@ -87,6 +87,7 @@ function show(d) {
     return tr;
   }));
   showDeal(d.deal);
+  showRent(d.rent, city);
   showFactors(d.factors);
   $("result").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
 }
@@ -103,6 +104,20 @@ function showDeal(deal) {
   $("deal-body").textContent = deal.verdict === "under"
     ? "Good news, but ask why. Age, floor, legal papers or condition could explain it."
     : `Open around ${fmt(deal.open_lakh)} and don't go above ${fmt(deal.limit_lakh)}. Our estimate is usually off by about ${$("err").textContent.replace("±", "")}, so treat this as a guide.`;
+}
+
+const fmtRent = (n) => `₹ ${Math.round(n).toLocaleString("en-IN")}`;
+
+function showRent(r, city) {
+  $("rent").hidden = !r;
+  if (!r) return;
+  $("rent-amt").textContent = fmtRent(r.rent);
+  $("rent-range").textContent = `a month, usually ${fmtRent(r.low)} to ${fmtRent(r.high)}`;
+  $("yield").textContent = `${r.yield_pct}%`;
+  $("yield-label").textContent = `a year in rent, against ${r.city_yield_pct}% typical in ${city}`;
+  $("repay").textContent = r.years_to_repay;
+  $("rent-note").textContent = "Rent is for a semi-furnished flat, from 2022 rentals." +
+    (r.shaky ? ` Treat the yield with caution in ${city}: its sale listings look cheap next to its rents.` : "");
 }
 
 function showFactors(factors) {
@@ -135,6 +150,8 @@ function renderCompare() {
     ["Usual range", (d) => `${fmt(d.low_lakh)} to ${fmt(d.high_lakh)}`],
     ["Per sq ft", (d) => `₹ ${d.price_per_sqft.toLocaleString("en-IN")}`],
     ["Vs city median", (d) => `${d.vs_city_pct > 0 ? "+" : ""}${d.vs_city_pct}%`],
+    ["Monthly rent", (d) => (d.rent ? fmtRent(d.rent.rent) : "not available")],
+    ["Yearly yield", (d) => (d.rent ? `${d.rent.yield_pct}%` : "not available")],
   ];
   const table = $("compare-table");
   const head = document.createElement("tr");

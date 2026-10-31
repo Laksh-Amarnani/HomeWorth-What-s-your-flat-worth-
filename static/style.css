@@ -97,6 +97,7 @@ th:not(:first-child), td:not(:first-child) { white-space: nowrap; padding-left: 
 .ghost:hover { background: var(--white); color: var(--ink); }
 .ghost.small { padding: 3px 8px; font-size: .8rem; margin-top: 6px; }
 .band h3.gap { margin-top: 30px; }
+.rent { margin-top: 40px; }
 #compare { margin-top: 48px; }
 .scroll { overflow-x: auto; }
 #compare th, #compare td { white-space: normal; vertical-align: top; }
@@ -108,11 +109,11 @@ input[type=number] { width: 100%; background: var(--white); color: var(--ink); b
 .embed .hero-in { grid-template-columns: 1fr; max-width: 520px; gap: 0; }
 .embed .nameplate { margin-bottom: 0; }
 .embed .band { padding: 36px max(12px, 3vw); }
-.lead { background: var(--gold); border-top: 3px solid var(--ink); padding: 32px max(12px, 3vw); }
+.callback { background: var(--gold); border-top: 3px solid var(--ink); padding: 32px max(12px, 3vw); }
 .lead-in { max-width: 520px; margin: 0 auto; }
-.lead h2 { font-size: 1.7rem; font-weight: 800; }
-.lead p { margin: 6px 0 0; }
-.lead input:not(.trap) { width: 100%; background: var(--white); color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; padding: 10px 12px; font: inherit; font-weight: 500; }
+.callback h2 { font-size: 1.7rem; font-weight: 800; }
+.callback p { margin: 6px 0 0; }
+.callback input:not(.trap) { width: 100%; background: var(--white); color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; padding: 10px 12px; font: inherit; font-weight: 500; }
 .trap { position: absolute; left: -9999px; width: 1px; height: 1px; }
 .broker { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 36px 0 0; align-items: start; }
 .broker h2 { font-size: 1.7rem; font-weight: 800; margin-bottom: 8px; }

@@ -39,5 +39,10 @@
   "Thane": 29.7,
   "Sonipat": 18.0,
   "Ghaziabad": 25.6
+ },
+ "rent": {
+  "r2_log": 0.868,
+  "median_error_pct": 18.9,
+  "range_coverage_pct": 77.2
  }
 }
