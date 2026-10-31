@@ -1,3 +1,13 @@
+---
+title: HomeWorth
+emoji: 🏠
+colorFrom: yellow
+colorTo: pink
+sdk: docker
+app_port: 8000
+pinned: false
+---
+
 # HomeWorth: house price estimator for 35 Indian cities
 
 Describe a flat (city, locality, area, bedrooms, bathrooms, condition, amenities) and get:
@@ -46,38 +56,30 @@ python prepare_data.py     # -> data/clean/listings.csv.gz
 python train.py            # -> models/ (fails if R² drops below 0.65)
 ```
 
-## Deploy to AWS (ECS Fargate behind a load balancer)
+## Deploy to Hugging Face Spaces (free)
+
+The block at the top of this file tells Spaces to build the `Dockerfile` and send traffic to port 8000.
 
 **One-time setup**
 
-1. Create an AWS account and an IAM user with programmatic access (AdministratorAccess is simplest for a course project). Keep the keys private.
-2. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and the [AWS CLI v2](https://aws.amazon.com/cli/).
-3. Run `aws configure` and enter the keys, region `ap-south-1` (Mumbai), output `json`.
+1. Create an account at [huggingface.co](https://huggingface.co), then choose *New* > *Space*. Name it `homeworth`, set the SDK to **Docker** with the **Blank** template, hardware **CPU basic (free)**, and visibility **Public**.
+2. Create a token: *Settings* > *Access Tokens* > *New token*, role **Write**. Keep it private.
+3. Install the uploader: `pip install -U huggingface_hub`
 
 **Deploy** (Git Bash, from this folder)
 
 ```bash
-# 1. test the container on your PC first
-docker build -t homeworth .
-docker run --rm -p 8000:8000 homeworth        # open http://localhost:8000, Ctrl+C to stop
-
-# 2. build, push to Amazon ECR and create the whole stack
-export AWS_REGION=ap-south-1
-./scripts/deploy_ecs.sh                       # prints: Website: http://....elb.amazonaws.com
+hf auth login            # paste the token
+hf upload YOUR_USERNAME/homeworth . . --repo-type=space   --exclude "practice_notebooks/*" "data/raw/*" ".git/*" ".venv/*" "__pycache__/*"
 ```
 
-The first deploy takes 5 to 10 minutes. Open the printed address; the page may take a minute more to respond while the container starts. To update after a change, commit and run `./scripts/deploy_ecs.sh` again.
+If `hf` is not found, use `huggingface-cli` instead. Spaces then builds the image, which takes a few minutes. Watch the *Logs* tab. The app is at `https://YOUR_USERNAME-homeworth.hf.space`.
 
-**What gets created:** a VPC with two public subnets, an Application Load Balancer, an ECS cluster and Fargate service (0.5 vCPU, 1 GB), a CloudWatch log group and an ECR repository. All of it is described in `infra/ecs-fargate.yaml`.
+To update after a change, run the same `hf upload` command again.
 
-**Cost:** roughly US$1 to 2 per day while running (the load balancer is the largest part). Delete everything when you are done:
+Free Spaces go to sleep after a period with no visitors, so the first load can be slow. Open the page once before a demo.
 
-```bash
-export AWS_REGION=ap-south-1
-./scripts/cleanup_ecs.sh                      # asks you to type yes
-```
-
-Optional HTTPS: get a domain and an ACM certificate, then `export CERTIFICATE_ARN=...` before running `deploy_ecs.sh`.
+Optional local check with Docker: `docker build -t homeworth . && docker run --rm -p 8000:8000 homeworth`.
 
 ## Files
 
@@ -87,5 +89,5 @@ app.py            predictor.py    Flask app and prediction logic
 templates/ static/                pages, styles, charts (Chart.js is bundled, so it works offline)
 models/                           trained model, metrics and dashboard stats
 data/clean/                       cleaned listings used by the app
-Dockerfile  infra/  scripts/      container and AWS deployment
+Dockerfile                        container used by Hugging Face Spaces
 ```
