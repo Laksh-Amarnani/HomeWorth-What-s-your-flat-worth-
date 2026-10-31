@@ -22,8 +22,9 @@ RUN useradd --create-home --uid 1000 appuser
 USER appuser
 
 EXPOSE 8000
+# Render assigns its own PORT, so the check follows it instead of assuming 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4)"
+    CMD python -c "import os, urllib.request as u; u.urlopen('http://127.0.0.1:%s/health' % os.environ.get('PORT', '8000'), timeout=4)"
 
 # 1 worker keeps memory low; 4 threads handle several visitors
 CMD ["sh", "-c", "exec gunicorn --bind 0.0.0.0:${PORT} --workers 1 --threads 4 --timeout 60 --access-logfile - app:app"]

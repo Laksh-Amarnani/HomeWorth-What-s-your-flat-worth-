@@ -1,13 +1,3 @@
----
-title: HomeWorth
-emoji: 🏠
-colorFrom: yellow
-colorTo: pink
-sdk: docker
-app_port: 8000
-pinned: false
----
-
 # HomeWorth: house price estimator for 35 Indian cities
 
 Describe a flat (city, locality, area, bedrooms, bathrooms, condition, amenities) and get:
@@ -56,28 +46,30 @@ python prepare_data.py     # -> data/clean/listings.csv.gz
 python train.py            # -> models/ (fails if R² drops below 0.65)
 ```
 
-## Deploy to Hugging Face Spaces (free)
+## Deploy to Render (free)
 
-The block at the top of this file tells Spaces to build the `Dockerfile` and send traffic to port 8000.
+Render builds the `Dockerfile` straight from a GitHub repository, and `render.yaml` holds the settings (free plan, Singapore region, health check on `/health`).
 
-**One-time setup**
-
-1. Create an account at [huggingface.co](https://huggingface.co), then choose *New* > *Space*. Name it `homeworth`, set the SDK to **Docker** with the **Blank** template, hardware **CPU basic (free)**, and visibility **Public**.
-2. Create a token: *Settings* > *Access Tokens* > *New token*, role **Write**. Keep it private.
-3. Install the uploader: `pip install -U huggingface_hub`
-
-**Deploy** (Git Bash, from this folder)
+**1. Put the code on GitHub** (once). Create an empty repository on github.com, without a README or `.gitignore`, then run this from the project folder:
 
 ```bash
-hf auth login            # paste the token
-hf upload YOUR_USERNAME/homeworth . . --repo-type=space   --exclude "practice_notebooks/*" "data/raw/*" ".git/*" ".venv/*" "__pycache__/*"
+git remote add origin https://github.com/YOUR_USERNAME/homeworth.git
+git push -u origin main
 ```
 
-If `hf` is not found, use `huggingface-cli` instead. Spaces then builds the image, which takes a few minutes. Watch the *Logs* tab. The app is at `https://YOUR_USERNAME-homeworth.hf.space`.
+**2. Create the service on Render**
 
-To update after a change, run the same `hf upload` command again.
+1. Sign up at [render.com](https://render.com) with your GitHub account.
+2. Choose *New* > *Blueprint*, pick the `homeworth` repository and press *Apply*.
+3. Wait for the first build, which takes a few minutes. Watch the *Logs* tab.
+4. The site is at `https://homeworth.onrender.com`, or a similar name if that one is taken.
 
-Free Spaces go to sleep after a period with no visitors, so the first load can be slow. Open the page once before a demo.
+Every later `git push` redeploys automatically.
+
+**Free plan limits**
+
+- The service goes to sleep after about 15 minutes with no visitors. The next visit takes up to a minute to wake it. Open the page before a demo.
+- It has 512 MB of memory. The app uses about 200 MB.
 
 Optional local check with Docker: `docker build -t homeworth . && docker run --rm -p 8000:8000 homeworth`.
 
@@ -89,5 +81,5 @@ app.py            predictor.py    Flask app and prediction logic
 templates/ static/                pages, styles, charts (Chart.js is bundled, so it works offline)
 models/                           trained model, metrics and dashboard stats
 data/clean/                       cleaned listings used by the app
-Dockerfile                        container used by Hugging Face Spaces
+Dockerfile  render.yaml               container and Render settings
 ```
