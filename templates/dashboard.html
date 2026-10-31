@@ -1,50 +1,50 @@
 {% extends "base.html" %}
-{% block title %}HomeWorth · Market dashboard{% endblock %}
+{% block title %}HomeWorth: market dashboard{% endblock %}
 {% block content %}
 <div class="page">
-  <p class="eyebrow">Market dashboard</p>
   <h1>What {{ '{:,}'.format(stats.total_listings) }} listings say</h1>
+  <p>Asking prices across {{ stats.cities|length }} cities, and an honest look at where our estimates can be trusted.</p>
 
   <div class="kpis">
-    <div class="kpi"><b>{{ '{:,}'.format(stats.total_listings) }}</b><span class="muted">listings</span></div>
-    <div class="kpi"><b>{{ stats.cities|length }}</b><span class="muted">cities</span></div>
-    <div class="kpi"><b>{{ stats.localities.values()|map('length')|sum }}</b><span class="muted">localities (6 metros)</span></div>
-    <div class="kpi"><b>{{ metrics.r2_log }}</b><span class="muted">R² on unseen homes</span></div>
-    <div class="kpi"><b>{{ metrics.median_error_pct }}%</b><span class="muted">typical price error</span></div>
-    <div class="kpi"><b>{{ metrics.range_coverage_pct }}%</b><span class="muted">in the 80% range</span></div>
+    <div class="kpi" style="--c: var(--gold)"><b>{{ '{:,}'.format(stats.total_listings) }}</b><span>flats listed</span></div>
+    <div class="kpi" style="--c: var(--pink); --fg: #fff"><b>{{ stats.cities|length }}</b><span>cities covered</span></div>
+    <div class="kpi" style="--c: var(--teal)"><b>{{ stats.localities.values()|map('length')|sum }}</b><span>localities in the 6 big metros</span></div>
+    <div class="kpi" style="--c: var(--white)"><b>{{ metrics.r2_log }}</b><span>R² on flats the model never saw</span></div>
+    <div class="kpi" style="--c: var(--lilac)"><b>{{ metrics.median_error_pct }}%</b><span>typical miss on price</span></div>
+    <div class="kpi" style="--c: var(--ink); --fg: var(--gold)"><b>{{ metrics.range_coverage_pct }}%</b><span>of real prices inside our range</span></div>
   </div>
 
   <div class="charts">
-    <section class="card wide">
+    <section class="chart wide">
       <h2>Price per sq ft by city</h2>
-      <p class="sub">Median asking price per square foot (₹).</p>
-      <div class="chart-box tall"><canvas id="c-city" role="img" aria-label="Median price per square foot by city"></canvas></div>
+      <p class="sub">Median asking price per square foot, in rupees.</p>
+      <div class="chart-box xtall"><canvas id="c-city" role="img" aria-label="Median price per square foot by city"></canvas></div>
     </section>
 
-    <section class="card">
-      <h2>Price by bedrooms
+    <section class="chart">
+      <h2>Price by bedrooms in
         <select id="bhk-city" class="inline-select" aria-label="City">{% for c in stats.cities %}<option>{{ c.city }}</option>{% endfor %}</select>
       </h2>
       <p class="sub">Median price in lakh.</p>
       <div class="chart-box"><canvas id="c-bhk" role="img" aria-label="Median price by number of bedrooms"></canvas></div>
     </section>
 
-    <section class="card">
-      <h2>What drives the price</h2>
-      <p class="sub">How much accuracy drops when a factor is shuffled.</p>
+    <section class="chart">
+      <h2>What moves the price</h2>
+      <p class="sub">How much the estimate gets worse when a detail is scrambled. Longer bar, bigger influence.</p>
       <div class="chart-box"><canvas id="c-imp" role="img" aria-label="Feature importance"></canvas></div>
     </section>
 
-    <section class="card">
-      <h2>Most expensive localities</h2>
-      <p class="sub">Median ₹ per sq ft, localities with 10+ listings.</p>
+    <section class="chart">
+      <h2>Priciest localities</h2>
+      <p class="sub">Median rupees per sq ft, localities with 10 or more listings.</p>
       <div class="chart-box tall"><canvas id="c-loc" role="img" aria-label="Most expensive localities"></canvas></div>
     </section>
 
-    <section class="card">
-      <h2>Where the model is less sure</h2>
-      <p class="sub">Typical error by city on unseen homes (%). Lower is better.</p>
-      <div class="chart-box tall"><canvas id="c-err" role="img" aria-label="Typical error by city"></canvas></div>
+    <section class="chart">
+      <h2>Where we miss most</h2>
+      <p class="sub">Typical error on unseen flats, in percent. Shorter is better.</p>
+      <div class="chart-box xtall"><canvas id="c-err" role="img" aria-label="Typical error by city"></canvas></div>
     </section>
   </div>
 </div>

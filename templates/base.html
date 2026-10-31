@@ -4,23 +4,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}HomeWorth{% endblock %}</title>
-  <meta name="description" content="Estimate the price of a home in 35 Indian cities using a model trained on 82,000 listings.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%236c8cff'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%2308101f'%3E%E2%8C%82%3C/text%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Estimate the price of a flat in 35 Indian cities from {{ '{:,}'.format(stats.total_listings) }} real listings.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FFB400'/%3E%3Cpath d='M6 16 16 7l10 9v10H6z' fill='%23F0306E' stroke='%231F1A5C' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/fonts.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <header class="nav">
-    <a class="brand" href="/"><span class="logo">⌂</span> HomeWorth</a>
+  <header class="nav {% block navclass %}{% endblock %}">
+    <a class="brand" href="/">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" fill="#1F1A5C"/><path d="M6 16 16 7l10 9v10H6z" fill="#F0306E" stroke="#FFB400" stroke-width="2.5" stroke-linejoin="round"/></svg>
+      HomeWorth
+    </a>
     <nav>
-      <a href="/" class="{{ 'on' if request.path == '/' }}">Estimator</a>
-      <a href="/dashboard" class="{{ 'on' if request.path == '/dashboard' }}">Market dashboard</a>
+      <a href="/" {% if request.path == '/' %}aria-current="page"{% endif %}>Estimate a flat</a>
+      <a href="/dashboard" {% if request.path == '/dashboard' %}aria-current="page"{% endif %}>Market dashboard</a>
     </nav>
   </header>
   {% block content %}{% endblock %}
   <footer>
-    Trained on {{ '{:,}'.format(stats.total_listings) }} listings from {{ stats.cities|length }} cities. Estimates are a guide, not a valuation.
+    <p>Prices come from {{ '{:,}'.format(stats.total_listings) }} listings in {{ stats.cities|length }} cities. Use them to start a negotiation, not to end one.</p>
   </footer>
   {% block scripts %}{% endblock %}
 </body>
