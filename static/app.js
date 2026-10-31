@@ -38,16 +38,17 @@ $("form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const btn = e.currentTarget.querySelector(".cta"), err = $("error");
   btn.disabled = true; btn.textContent = "Working it out…"; err.hidden = true;
+  const sent = inputs();  // the form can change while we wait, so the answer is tied to what was sent
   try {
     const res = await fetch("/api/predict", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(inputs()),
+      body: JSON.stringify(sent),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Something went wrong. Try again.");
     show(data);
-    document.dispatchEvent(new CustomEvent("estimate", { detail: { d: data, inputs: inputs() } }));
+    document.dispatchEvent(new CustomEvent("estimate", { detail: { d: data, inputs: sent } }));
   } catch (ex) {
     err.textContent = ex.message; err.hidden = false;
   } finally {

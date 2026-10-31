@@ -13,6 +13,7 @@ ROOT = Path(__file__).parent
 MODELS = joblib.load(ROOT / "models" / "model.joblib")
 RENT_MODELS = joblib.load(ROOT / "models" / "rent.joblib")
 STATS = json.loads((ROOT / "models" / "stats.json").read_text())
+RENT_LOCALITIES = STATS.pop("rent_localities")  # server-only: kept out of STATS so the dashboard page does not carry it
 METRICS = json.loads((ROOT / "models" / "metrics.json").read_text())
 LISTINGS = pd.read_csv(ROOT / "data" / "clean" / "listings.csv.gz", low_memory=False)
 
@@ -43,7 +44,7 @@ def _row(city, locality, area, bedrooms, bathrooms, resale, amenities):
     }])[FEATURES]
 
 
-def explain(city, locality, area, bedrooms, bathrooms, resale, amenities, mid):
+def explain(city, locality, area, bedrooms, bathrooms, resale, amenities):
     """What each detail the user gave adds to the price, versus a typical value for just that detail."""
     args = dict(city=city, locality=locality, area=area, bedrooms=bedrooms, bathrooms=bathrooms, resale=resale, amenities=amenities)
     checks = []  # (field, label, typical value, what 'typical' means)
@@ -51,10 +52,11 @@ def explain(city, locality, area, bedrooms, bathrooms, resale, amenities, mid):
     if amenities not in ("unknown", "standard"): checks.append(("amenities", f"{amenities.capitalize()} amenities", "standard", "standard amenities"))
     if resale is not None: checks.append(("resale", "Resale" if resale else "New", 1 - resale, "new" if resale else "resale"))
     if bathrooms is not None and bathrooms != bedrooms: checks.append(("bathrooms", f"{bathrooms} bathroom{'s' * (bathrooms > 1)}", bedrooms, f"{bedrooms} bathroom{'s' * (bedrooms > 1)}"))
+    full = float(to_price(MODELS["point"].predict(_row(**args))[0], area))  # the point model itself, not the sorted middle
     out = []
     for field, label, typical, versus in checks:
         base = to_price(MODELS["point"].predict(_row(**{**args, field: typical}))[0], area)
-        out.append({"label": label, "versus": versus, "effect_lakh": round(mid - float(base), 1)})
+        out.append({"label": label, "versus": versus, "effect_lakh": round(full - float(base), 1)})
     return sorted(out, key=lambda e: -abs(e["effect_lakh"]))
 
 
@@ -62,7 +64,7 @@ def rent(city, locality, area, bedrooms, bathrooms, price_lakh):
     """Monthly rent for a semi-furnished flat, and the yield on the price (the asking price if given). None outside the six metros."""
     if city not in STATS["city_yield_pct"]:
         return None
-    known = locality and locality.lower() in STATS["rent_localities"][city]
+    known = locality and locality.lower() in RENT_LOCALITIES[city]
     row = pd.DataFrame([{
         "city": city, "place": f"{city}|{locality.lower() if known else '-'}", "area_sqft": area, "bedrooms": bedrooms,
         "bathrooms": bathrooms or bedrooms, "furnishing": 1,  # bathrooms: as many as bedrooms when unknown
@@ -107,7 +109,7 @@ def predict(city, locality, area, bedrooms, bathrooms, resale, amenities, asking
         "vs_city_pct": round((pps / CITY_PPS[city] - 1) * 100),
         "typical_error_pct": METRICS["median_error_pct_by_city"][city],
         "similar": similar(city, locality, area, bedrooms),
-        "factors": explain(city, locality, area, bedrooms, bathrooms, resale, amenities, mid),
+        "factors": explain(city, locality, area, bedrooms, bathrooms, resale, amenities),
         "deal": deal(asking, lo, mid, hi) if asking else None,
         "rent": rent(city, locality, area, bedrooms, bathrooms, asking or mid),
     }

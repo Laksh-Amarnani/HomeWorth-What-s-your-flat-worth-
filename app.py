@@ -3,6 +3,7 @@ import hmac
 import io
 import os
 import re
+import threading
 import time
 import unicodedata
 from collections import defaultdict
@@ -17,9 +18,20 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)  # Render sits behind a proxy; this gives the real IP, scheme and host
 
 
+def _plain_char(c):
+    return c.isalnum() or c in " '-" or unicodedata.category(c).startswith("M")  # M = vowel marks of Indian scripts
+
+
 def safe_text(s):
-    """Letters (including vowel marks of Indian scripts), digits, space, ' and - only: no links, markdown or mentions reach the webhook."""
-    return 2 <= len(s) <= 60 and all(c.isalnum() or c in " '-" or unicodedata.category(c).startswith("M") for c in s)
+    """Letters, digits, space, ' and - only: no links, markdown or mentions reach the webhook."""
+    return 2 <= len(s) <= 60 and all(map(_plain_char, s))
+
+
+def clean_brand(s):
+    """A broker's name made safe for chat apps: '&' becomes 'and', other punctuation becomes a space. Shown and stored the same way."""
+    s = str(s).replace("&", " and ")
+    s = " ".join("".join(c if _plain_char(c) else " " for c in s).split())[:40]
+    return s if len(s) >= 2 else "HomeWorth"
 
 
 def plain(s):
@@ -27,7 +39,18 @@ def plain(s):
     return " ".join(str(s).replace(".", " ").split())
 
 
-SENT = defaultdict(list)  # ip -> times of recent leads; in memory, so per worker (we run one)
+SENT, LOCK = defaultdict(list), threading.Lock()  # ip -> times of recent leads; in memory, so per worker (we run one)
+
+
+def rate_limited(ip, limit=5, window=3600):
+    now = time.time()
+    with LOCK:  # gunicorn runs 4 threads: check and write must happen together
+        if len(SENT) > 5000:  # stale addresses would otherwise pile up forever
+            for k in [k for k, v in SENT.items() if not v or now - v[-1] >= window]:
+                del SENT[k]
+        recent = [t for t in SENT[ip] if now - t < window]
+        SENT[ip] = recent if len(recent) >= limit else recent + [now]
+        return len(recent) >= limit
 
 
 @app.get("/")
@@ -71,7 +94,7 @@ def api_predict():
 
 @app.get("/embed")
 def embed():
-    return render_template("embed.html", cities=predictor.CITIES, localities=predictor.STATS["localities"], stats=predictor.STATS, brand=request.args.get("brand", "")[:40] or "HomeWorth")
+    return render_template("embed.html", cities=predictor.CITIES, localities=predictor.STATS["localities"], stats=predictor.STATS, brand=clean_brand(request.args.get("brand", "")))
 
 
 @app.get("/for-brokers")
@@ -85,8 +108,9 @@ def api_lead():
     if f.get("website"):  # hidden field only bots fill in
         return jsonify(ok=True)
     name = plain(f.get("name", ""))
-    phone = re.sub(r"[\s-]", "", str(f.get("phone", ""))).removeprefix("+91")
-    if not safe_text(name) or not re.fullmatch(r"[6-9]\d{9}", phone):
+    # +91, 91 or a leading 0 are dropped; [0-9] rather than \d so only ASCII digits pass
+    phone = re.sub(r"^(\+91|91|0)(?=[0-9]{10}$)", "", re.sub(r"[\s-]", "", str(f.get("phone", ""))))
+    if not safe_text(name) or not re.fullmatch(r"[6-9][0-9]{9}", phone):
         return jsonify(error="Enter your name and a 10-digit mobile number."), 400
     # everything else comes from the estimate, so anything that doesn't fit it is rejected rather than cleaned
     try:
@@ -97,12 +121,9 @@ def api_lead():
     if (city not in predictor.CITIES or (locality and locality not in predictor.STATS["localities"].get(city, []))
             or not 200 <= area <= 10000 or not 1 <= bedrooms <= 8 or not 0 < estimate <= 100000):
         return jsonify(error="Get an estimate before leaving your number."), 400
-    brand = plain(f.get("brand", ""))
-    recent = [t for t in SENT[request.remote_addr] if time.time() - t < 3600]
-    if len(recent) >= 5:
+    if rate_limited(request.remote_addr):
         return jsonify(error="Too many requests. Please try again in an hour."), 429
-    SENT[request.remote_addr] = recent + [time.time()]
-    leads.save({"brand": brand if safe_text(brand) else "HomeWorth", "name": name, "phone": phone, "city": city,
+    leads.save({"brand": clean_brand(f.get("brand", "")), "name": name, "phone": phone, "city": city,
                 "locality": locality, "area_sqft": area, "bedrooms": bedrooms, "estimate_lakh": estimate})
     return jsonify(ok=True)
 
