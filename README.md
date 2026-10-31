@@ -33,7 +33,7 @@ Accuracy differs by city; see "Where the model is less sure" on the dashboard. M
 | Setting | What it does |
 |---|---|
 | `LEAD_WEBHOOK_URL` | A Slack or Discord incoming-webhook URL. Each lead is posted there. This is the copy that survives restarts. |
-| `ADMIN_KEY` | Opens `/leads.csv?key=...` to download every lead. Without it that page returns 404. |
+| `ADMIN_KEY` | The password for `/leads.csv`, which downloads every lead. Your browser asks for it (type any username). Without `ADMIN_KEY` set, the page returns 404. |
 | `LEADS_DB` | Where the SQLite file lives. The default is the temp folder, which Render's free plan wipes on restart. |
 
 Leads are limited to 5 per IP per hour, and a hidden field catches simple bots.

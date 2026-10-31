@@ -87,8 +87,12 @@ def api_lead():
 @app.get("/leads.csv")
 def leads_csv():
     key = os.environ.get("ADMIN_KEY")
-    if not key or not hmac.compare_digest(request.args.get("key", ""), key):
+    if not key:
         abort(404)
+    # Basic auth keeps the key out of the URL, which gunicorn's access log would print; any username works
+    auth = request.authorization
+    if not auth or not hmac.compare_digest((auth.password or "").encode(), key.encode()):
+        return Response("Password required", 401, {"WWW-Authenticate": 'Basic realm="HomeWorth leads"'})
     out = io.StringIO()
     w = csv.writer(out)
     w.writerow(leads.COLUMNS)

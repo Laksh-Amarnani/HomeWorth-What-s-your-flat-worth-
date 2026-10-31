@@ -8,6 +8,6 @@ services:
     autoDeployTrigger: commit
     envVars:
       - key: ADMIN_KEY
-        generateValue: true   # read it from the Render dashboard, then open /leads.csv?key=...
+        generateValue: true   # read it from the Render dashboard; it is the password for /leads.csv
       - key: LEAD_WEBHOOK_URL
         sync: false           # paste a Slack or Discord webhook URL in the dashboard
