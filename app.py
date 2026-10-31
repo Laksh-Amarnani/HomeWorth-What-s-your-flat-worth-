@@ -4,6 +4,7 @@ import io
 import os
 import re
 import time
+import unicodedata
 from collections import defaultdict
 
 from flask import Flask, Response, abort, jsonify, render_template, request
@@ -14,7 +15,18 @@ import predictor
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)  # Render sits behind a proxy; this gives the real IP, scheme and host
-SAFE_TEXT = re.compile(r"[\w .'-]{2,60}")  # letters, digits, space . ' - only: no markup, mentions or links reach the webhook
+
+
+def safe_text(s):
+    """Letters (including vowel marks of Indian scripts), digits, space, ' and - only: no links, markdown or mentions reach the webhook."""
+    return 2 <= len(s) <= 60 and all(c.isalnum() or c in " '-" or unicodedata.category(c).startswith("M") for c in s)
+
+
+def plain(s):
+    """Dots become spaces ('evil.com' would become a link in chat apps); extra spaces are dropped."""
+    return " ".join(str(s).replace(".", " ").split())
+
+
 SENT = defaultdict(list)  # ip -> times of recent leads; in memory, so per worker (we run one)
 
 
@@ -72,9 +84,9 @@ def api_lead():
     f = request.get_json(silent=True) or {}
     if f.get("website"):  # hidden field only bots fill in
         return jsonify(ok=True)
-    name = str(f.get("name", "")).strip()
+    name = plain(f.get("name", ""))
     phone = re.sub(r"[\s-]", "", str(f.get("phone", ""))).removeprefix("+91")
-    if not SAFE_TEXT.fullmatch(name) or not re.fullmatch(r"[6-9]\d{9}", phone):
+    if not safe_text(name) or not re.fullmatch(r"[6-9]\d{9}", phone):
         return jsonify(error="Enter your name and a 10-digit mobile number."), 400
     # everything else comes from the estimate, so anything that doesn't fit it is rejected rather than cleaned
     try:
@@ -85,12 +97,12 @@ def api_lead():
     if (city not in predictor.CITIES or (locality and locality not in predictor.STATS["localities"].get(city, []))
             or not 200 <= area <= 10000 or not 1 <= bedrooms <= 8 or not 0 < estimate <= 100000):
         return jsonify(error="Get an estimate before leaving your number."), 400
-    brand = str(f.get("brand", ""))
+    brand = plain(f.get("brand", ""))
     recent = [t for t in SENT[request.remote_addr] if time.time() - t < 3600]
     if len(recent) >= 5:
         return jsonify(error="Too many requests. Please try again in an hour."), 429
     SENT[request.remote_addr] = recent + [time.time()]
-    leads.save({"brand": brand if SAFE_TEXT.fullmatch(brand) else "HomeWorth", "name": name, "phone": phone, "city": city,
+    leads.save({"brand": brand if safe_text(brand) else "HomeWorth", "name": name, "phone": phone, "city": city,
                 "locality": locality, "area_sqft": area, "bedrooms": bedrooms, "estimate_lakh": estimate})
     return jsonify(ok=True)
 
