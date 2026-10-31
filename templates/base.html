@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}HomeWorth{% endblock %}</title>
+  <meta name="description" content="Estimate the price of a home in 35 Indian cities using a model trained on 82,000 listings.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%236c8cff'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%2308101f'%3E%E2%8C%82%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="/"><span class="logo">⌂</span> HomeWorth</a>
+    <nav>
+      <a href="/" class="{{ 'on' if request.path == '/' }}">Estimator</a>
+      <a href="/dashboard" class="{{ 'on' if request.path == '/dashboard' }}">Market dashboard</a>
+    </nav>
+  </header>
+  {% block content %}{% endblock %}
+  <footer>
+    Trained on {{ '{:,}'.format(stats.total_listings) }} listings from {{ stats.cities|length }} cities. Estimates are a guide, not a valuation.
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -75,6 +75,11 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     pps = np.log(df["price_lakh"] * 1e5 / df["area_sqft"])
     g = pps.groupby(df["city"])
     df = df[(pps >= g.transform(lambda s: s.quantile(0.01))) & (pps <= g.transform(lambda s: s.quantile(0.99)))]
+    # within a locality (needs 8+ neighbours to judge), drop prices half or double the local median: typos, wrong units
+    pps = df["price_lakh"] * 1e5 / df["area_sqft"]
+    g = pps.groupby([df["city"], df["locality"]])
+    med, n = g.transform("median"), g.transform("size")
+    df = df[~((n >= 8) & ((pps < med / 2) | (pps > med * 2)))]
     return df[df.groupby("city")["city"].transform("size") >= MIN_CITY_ROWS].reset_index(drop=True)
 
 
