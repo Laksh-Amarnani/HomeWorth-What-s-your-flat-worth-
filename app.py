@@ -14,6 +14,7 @@ import predictor
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)  # Render sits behind a proxy; this gives the real IP, scheme and host
+SAFE_TEXT = re.compile(r"[\w .'-]{2,60}")  # letters, digits, space . ' - only: no markup, mentions or links reach the webhook
 SENT = defaultdict(list)  # ip -> times of recent leads; in memory, so per worker (we run one)
 
 
@@ -73,14 +74,24 @@ def api_lead():
         return jsonify(ok=True)
     name = str(f.get("name", "")).strip()
     phone = re.sub(r"[\s-]", "", str(f.get("phone", ""))).removeprefix("+91")
-    if not 2 <= len(name) <= 60 or not re.fullmatch(r"[6-9]\d{9}", phone):
+    if not SAFE_TEXT.fullmatch(name) or not re.fullmatch(r"[6-9]\d{9}", phone):
         return jsonify(error="Enter your name and a 10-digit mobile number."), 400
+    # everything else comes from the estimate, so anything that doesn't fit it is rejected rather than cleaned
+    try:
+        city, locality, area, bedrooms = f["city"], f.get("locality") or "", float(f["area_sqft"]), int(f["bedrooms"])
+        estimate = float(f["estimate_lakh"])
+    except (KeyError, ValueError, TypeError):
+        return jsonify(error="Get an estimate before leaving your number."), 400
+    if (city not in predictor.CITIES or (locality and locality not in predictor.STATS["localities"].get(city, []))
+            or not 200 <= area <= 10000 or not 1 <= bedrooms <= 8 or not 0 < estimate <= 100000):
+        return jsonify(error="Get an estimate before leaving your number."), 400
+    brand = str(f.get("brand", ""))
     recent = [t for t in SENT[request.remote_addr] if time.time() - t < 3600]
     if len(recent) >= 5:
         return jsonify(error="Too many requests. Please try again in an hour."), 429
     SENT[request.remote_addr] = recent + [time.time()]
-    leads.save({"brand": str(f.get("brand", ""))[:40] or "HomeWorth", "name": name, "phone": phone,
-                **{k: str(f.get(k, ""))[:60] for k in ("city", "locality", "area_sqft", "bedrooms", "estimate_lakh")}})
+    leads.save({"brand": brand if SAFE_TEXT.fullmatch(brand) else "HomeWorth", "name": name, "phone": phone, "city": city,
+                "locality": locality, "area_sqft": area, "bedrooms": bedrooms, "estimate_lakh": estimate})
     return jsonify(ok=True)
 
 
@@ -97,8 +108,8 @@ def leads_csv():
     w = csv.writer(out)
     w.writerow(leads.COLUMNS)
     # a leading = + - @ would make Excel run the cell as a formula
-    w.writerows([("'" + v if v and str(v)[0] in "=+-@" else v for v in row) for row in leads.all_rows()])
-    return Response(out.getvalue(), mimetype="text/csv")
+    w.writerows([("'" + v if v and str(v)[0] in "=+-@\t\r" else v for v in row) for row in leads.all_rows()])
+    return Response(out.getvalue(), mimetype="text/csv", headers={"Cache-Control": "no-store"})
 
 
 @app.get("/health")
