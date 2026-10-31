@@ -1,0 +1,1692 @@
+{
+ "total_listings": 82554,
+ "cities": [
+  {
+   "city": "Kolkata",
+   "listings": 8889,
+   "median_price_lakh": 50.0,
+   "median_pps": 4550.4
+  },
+  {
+   "city": "Bengaluru",
+   "listings": 8145,
+   "median_price_lakh": 78.0,
+   "median_pps": 5741.3
+  },
+  {
+   "city": "Mumbai",
+   "listings": 7556,
+   "median_price_lakh": 105.0,
+   "median_pps": 12168.0
+  },
+  {
+   "city": "Chennai",
+   "listings": 6939,
+   "median_price_lakh": 62.3,
+   "median_pps": 5657.9
+  },
+  {
+   "city": "Delhi",
+   "listings": 6471,
+   "median_price_lakh": 120.0,
+   "median_pps": 8555.6
+  },
+  {
+   "city": "Hyderabad",
+   "listings": 4429,
+   "median_price_lakh": 85.0,
+   "median_pps": 5641.0
+  },
+  {
+   "city": "Faridabad",
+   "listings": 2835,
+   "median_price_lakh": 75.0,
+   "median_pps": 4480.0
+  },
+  {
+   "city": "Gurgaon",
+   "listings": 2808,
+   "median_price_lakh": 200.0,
+   "median_pps": 9247.7
+  },
+  {
+   "city": "Greater Noida",
+   "listings": 2771,
+   "median_price_lakh": 63.0,
+   "median_pps": 5000.0
+  },
+  {
+   "city": "Ahmedabad",
+   "listings": 2738,
+   "median_price_lakh": 70.0,
+   "median_pps": 5469.0
+  },
+  {
+   "city": "Jaipur",
+   "listings": 2643,
+   "median_price_lakh": 52.0,
+   "median_pps": 3812.6
+  },
+  {
+   "city": "Vadodara",
+   "listings": 2290,
+   "median_price_lakh": 39.0,
+   "median_pps": 3419.6
+  },
+  {
+   "city": "Pune",
+   "listings": 2104,
+   "median_price_lakh": 70.0,
+   "median_pps": 7048.2
+  },
+  {
+   "city": "Surat",
+   "listings": 2104,
+   "median_price_lakh": 57.0,
+   "median_pps": 4207.8
+  },
+  {
+   "city": "Visakhapatnam",
+   "listings": 1654,
+   "median_price_lakh": 55.0,
+   "median_pps": 4266.7
+  },
+  {
+   "city": "Zirakpur",
+   "listings": 1436,
+   "median_price_lakh": 63.2,
+   "median_pps": 4083.3
+  },
+  {
+   "city": "Mohali",
+   "listings": 1431,
+   "median_price_lakh": 65.0,
+   "median_pps": 4362.7
+  },
+  {
+   "city": "Chandigarh",
+   "listings": 1361,
+   "median_price_lakh": 72.0,
+   "median_pps": 4725.2
+  },
+  {
+   "city": "Noida",
+   "listings": 1199,
+   "median_price_lakh": 85.0,
+   "median_pps": 6167.4
+  },
+  {
+   "city": "Goa",
+   "listings": 1075,
+   "median_price_lakh": 72.0,
+   "median_pps": 6268.1
+  },
+  {
+   "city": "Ranchi",
+   "listings": 1040,
+   "median_price_lakh": 55.5,
+   "median_pps": 4039.0
+  },
+  {
+   "city": "Bhiwadi",
+   "listings": 1001,
+   "median_price_lakh": 25.0,
+   "median_pps": 2290.9
+  },
+  {
+   "city": "Kochi",
+   "listings": 993,
+   "median_price_lakh": 79.0,
+   "median_pps": 5200.0
+  },
+  {
+   "city": "Dehradun",
+   "listings": 912,
+   "median_price_lakh": 65.0,
+   "median_pps": 4585.0
+  },
+  {
+   "city": "Thane",
+   "listings": 900,
+   "median_price_lakh": 71.5,
+   "median_pps": 10400.0
+  },
+  {
+   "city": "Ghaziabad",
+   "listings": 869,
+   "median_price_lakh": 61.0,
+   "median_pps": 4672.0
+  },
+  {
+   "city": "Lucknow",
+   "listings": 784,
+   "median_price_lakh": 70.0,
+   "median_pps": 5134.2
+  },
+  {
+   "city": "Patna",
+   "listings": 743,
+   "median_price_lakh": 72.0,
+   "median_pps": 5704.9
+  },
+  {
+   "city": "Kanpur",
+   "listings": 732,
+   "median_price_lakh": 56.0,
+   "median_pps": 4417.4
+  },
+  {
+   "city": "Guwahati",
+   "listings": 722,
+   "median_price_lakh": 60.0,
+   "median_pps": 4808.4
+  },
+  {
+   "city": "Sonipat",
+   "listings": 718,
+   "median_price_lakh": 52.0,
+   "median_pps": 2874.5
+  },
+  {
+   "city": "Jamshedpur",
+   "listings": 601,
+   "median_price_lakh": 42.0,
+   "median_pps": 3503.7
+  },
+  {
+   "city": "Coimbatore",
+   "listings": 569,
+   "median_price_lakh": 60.0,
+   "median_pps": 4606.1
+  },
+  {
+   "city": "Kalyan",
+   "listings": 564,
+   "median_price_lakh": 45.0,
+   "median_pps": 6857.1
+  },
+  {
+   "city": "Vijayawada",
+   "listings": 528,
+   "median_price_lakh": 45.0,
+   "median_pps": 3777.5
+  }
+ ],
+ "by_bedrooms": [
+  {
+   "city": "Ahmedabad",
+   "bedrooms": 1.0,
+   "price_lakh": 25.0
+  },
+  {
+   "city": "Ahmedabad",
+   "bedrooms": 2.0,
+   "price_lakh": 50.0
+  },
+  {
+   "city": "Ahmedabad",
+   "bedrooms": 3.0,
+   "price_lakh": 95.0
+  },
+  {
+   "city": "Ahmedabad",
+   "bedrooms": 4.0,
+   "price_lakh": 245.0
+  },
+  {
+   "city": "Ahmedabad",
+   "bedrooms": 5.0,
+   "price_lakh": 318.0
+  },
+  {
+   "city": "Bengaluru",
+   "bedrooms": 1.0,
+   "price_lakh": 50.0
+  },
+  {
+   "city": "Bengaluru",
+   "bedrooms": 2.0,
+   "price_lakh": 62.8
+  },
+  {
+   "city": "Bengaluru",
+   "bedrooms": 3.0,
+   "price_lakh": 91.6
+  },
+  {
+   "city": "Bengaluru",
+   "bedrooms": 4.0,
+   "price_lakh": 250.0
+  },
+  {
+   "city": "Bengaluru",
+   "bedrooms": 5.0,
+   "price_lakh": 453.5
+  },
+  {
+   "city": "Bhiwadi",
+   "bedrooms": 1.0,
+   "price_lakh": 15.0
+  },
+  {
+   "city": "Bhiwadi",
+   "bedrooms": 2.0,
+   "price_lakh": 23.4
+  },
+  {
+   "city": "Bhiwadi",
+   "bedrooms": 3.0,
+   "price_lakh": 35.0
+  },
+  {
+   "city": "Bhiwadi",
+   "bedrooms": 4.0,
+   "price_lakh": 45.0
+  },
+  {
+   "city": "Chandigarh",
+   "bedrooms": 1.0,
+   "price_lakh": 27.3
+  },
+  {
+   "city": "Chandigarh",
+   "bedrooms": 2.0,
+   "price_lakh": 50.0
+  },
+  {
+   "city": "Chandigarh",
+   "bedrooms": 3.0,
+   "price_lakh": 72.9
+  },
+  {
+   "city": "Chandigarh",
+   "bedrooms": 4.0,
+   "price_lakh": 125.0
+  },
+  {
+   "city": "Chandigarh",
+   "bedrooms": 5.0,
+   "price_lakh": 148.0
+  },
+  {
+   "city": "Chennai",
+   "bedrooms": 1.0,
+   "price_lakh": 33.0
+  },
+  {
+   "city": "Chennai",
+   "bedrooms": 2.0,
+   "price_lakh": 52.5
+  },
+  {
+   "city": "Chennai",
+   "bedrooms": 3.0,
+   "price_lakh": 85.0
+  },
+  {
+   "city": "Chennai",
+   "bedrooms": 4.0,
+   "price_lakh": 203.0
+  },
+  {
+   "city": "Chennai",
+   "bedrooms": 5.0,
+   "price_lakh": 400.0
+  },
+  {
+   "city": "Coimbatore",
+   "bedrooms": 1.0,
+   "price_lakh": 30.0
+  },
+  {
+   "city": "Coimbatore",
+   "bedrooms": 2.0,
+   "price_lakh": 51.0
+  },
+  {
+   "city": "Coimbatore",
+   "bedrooms": 3.0,
+   "price_lakh": 79.2
+  },
+  {
+   "city": "Coimbatore",
+   "bedrooms": 4.0,
+   "price_lakh": 130.0
+  },
+  {
+   "city": "Coimbatore",
+   "bedrooms": 5.0,
+   "price_lakh": 275.0
+  },
+  {
+   "city": "Dehradun",
+   "bedrooms": 1.0,
+   "price_lakh": 36.0
+  },
+  {
+   "city": "Dehradun",
+   "bedrooms": 2.0,
+   "price_lakh": 52.0
+  },
+  {
+   "city": "Dehradun",
+   "bedrooms": 3.0,
+   "price_lakh": 80.4
+  },
+  {
+   "city": "Dehradun",
+   "bedrooms": 4.0,
+   "price_lakh": 166.5
+  },
+  {
+   "city": "Dehradun",
+   "bedrooms": 5.0,
+   "price_lakh": 180.0
+  },
+  {
+   "city": "Delhi",
+   "bedrooms": 1.0,
+   "price_lakh": 34.0
+  },
+  {
+   "city": "Delhi",
+   "bedrooms": 2.0,
+   "price_lakh": 45.0
+  },
+  {
+   "city": "Delhi",
+   "bedrooms": 3.0,
+   "price_lakh": 150.0
+  },
+  {
+   "city": "Delhi",
+   "bedrooms": 4.0,
+   "price_lakh": 268.0
+  },
+  {
+   "city": "Delhi",
+   "bedrooms": 5.0,
+   "price_lakh": 450.0
+  },
+  {
+   "city": "Faridabad",
+   "bedrooms": 1.0,
+   "price_lakh": 20.0
+  },
+  {
+   "city": "Faridabad",
+   "bedrooms": 2.0,
+   "price_lakh": 44.0
+  },
+  {
+   "city": "Faridabad",
+   "bedrooms": 3.0,
+   "price_lakh": 81.5
+  },
+  {
+   "city": "Faridabad",
+   "bedrooms": 4.0,
+   "price_lakh": 142.0
+  },
+  {
+   "city": "Faridabad",
+   "bedrooms": 5.0,
+   "price_lakh": 259.0
+  },
+  {
+   "city": "Ghaziabad",
+   "bedrooms": 1.0,
+   "price_lakh": 20.5
+  },
+  {
+   "city": "Ghaziabad",
+   "bedrooms": 2.0,
+   "price_lakh": 44.9
+  },
+  {
+   "city": "Ghaziabad",
+   "bedrooms": 3.0,
+   "price_lakh": 78.0
+  },
+  {
+   "city": "Ghaziabad",
+   "bedrooms": 4.0,
+   "price_lakh": 140.0
+  },
+  {
+   "city": "Ghaziabad",
+   "bedrooms": 5.0,
+   "price_lakh": 237.5
+  },
+  {
+   "city": "Goa",
+   "bedrooms": 1.0,
+   "price_lakh": 45.0
+  },
+  {
+   "city": "Goa",
+   "bedrooms": 2.0,
+   "price_lakh": 70.0
+  },
+  {
+   "city": "Goa",
+   "bedrooms": 3.0,
+   "price_lakh": 130.0
+  },
+  {
+   "city": "Goa",
+   "bedrooms": 4.0,
+   "price_lakh": 250.0
+  },
+  {
+   "city": "Goa",
+   "bedrooms": 5.0,
+   "price_lakh": 315.0
+  },
+  {
+   "city": "Greater Noida",
+   "bedrooms": 1.0,
+   "price_lakh": 17.5
+  },
+  {
+   "city": "Greater Noida",
+   "bedrooms": 2.0,
+   "price_lakh": 50.0
+  },
+  {
+   "city": "Greater Noida",
+   "bedrooms": 3.0,
+   "price_lakh": 80.0
+  },
+  {
+   "city": "Greater Noida",
+   "bedrooms": 4.0,
+   "price_lakh": 128.5
+  },
+  {
+   "city": "Greater Noida",
+   "bedrooms": 5.0,
+   "price_lakh": 227.0
+  },
+  {
+   "city": "Gurgaon",
+   "bedrooms": 1.0,
+   "price_lakh": 23.0
+  },
+  {
+   "city": "Gurgaon",
+   "bedrooms": 2.0,
+   "price_lakh": 85.0
+  },
+  {
+   "city": "Gurgaon",
+   "bedrooms": 3.0,
+   "price_lakh": 180.0
+  },
+  {
+   "city": "Gurgaon",
+   "bedrooms": 4.0,
+   "price_lakh": 316.5
+  },
+  {
+   "city": "Gurgaon",
+   "bedrooms": 5.0,
+   "price_lakh": 575.0
+  },
+  {
+   "city": "Guwahati",
+   "bedrooms": 1.0,
+   "price_lakh": 27.4
+  },
+  {
+   "city": "Guwahati",
+   "bedrooms": 2.0,
+   "price_lakh": 46.0
+  },
+  {
+   "city": "Guwahati",
+   "bedrooms": 3.0,
+   "price_lakh": 65.0
+  },
+  {
+   "city": "Guwahati",
+   "bedrooms": 4.0,
+   "price_lakh": 134.0
+  },
+  {
+   "city": "Guwahati",
+   "bedrooms": 5.0,
+   "price_lakh": 158.5
+  },
+  {
+   "city": "Hyderabad",
+   "bedrooms": 1.0,
+   "price_lakh": 33.1
+  },
+  {
+   "city": "Hyderabad",
+   "bedrooms": 2.0,
+   "price_lakh": 58.0
+  },
+  {
+   "city": "Hyderabad",
+   "bedrooms": 3.0,
+   "price_lakh": 110.0
+  },
+  {
+   "city": "Hyderabad",
+   "bedrooms": 4.0,
+   "price_lakh": 310.0
+  },
+  {
+   "city": "Hyderabad",
+   "bedrooms": 5.0,
+   "price_lakh": 328.0
+  },
+  {
+   "city": "Jaipur",
+   "bedrooms": 1.0,
+   "price_lakh": 18.0
+  },
+  {
+   "city": "Jaipur",
+   "bedrooms": 2.0,
+   "price_lakh": 36.0
+  },
+  {
+   "city": "Jaipur",
+   "bedrooms": 3.0,
+   "price_lakh": 55.2
+  },
+  {
+   "city": "Jaipur",
+   "bedrooms": 4.0,
+   "price_lakh": 100.0
+  },
+  {
+   "city": "Jaipur",
+   "bedrooms": 5.0,
+   "price_lakh": 222.0
+  },
+  {
+   "city": "Jamshedpur",
+   "bedrooms": 1.0,
+   "price_lakh": 15.5
+  },
+  {
+   "city": "Jamshedpur",
+   "bedrooms": 2.0,
+   "price_lakh": 33.0
+  },
+  {
+   "city": "Jamshedpur",
+   "bedrooms": 3.0,
+   "price_lakh": 49.8
+  },
+  {
+   "city": "Jamshedpur",
+   "bedrooms": 4.0,
+   "price_lakh": 60.0
+  },
+  {
+   "city": "Jamshedpur",
+   "bedrooms": 5.0,
+   "price_lakh": 130.0
+  },
+  {
+   "city": "Kalyan",
+   "bedrooms": 1.0,
+   "price_lakh": 38.0
+  },
+  {
+   "city": "Kalyan",
+   "bedrooms": 2.0,
+   "price_lakh": 60.0
+  },
+  {
+   "city": "Kalyan",
+   "bedrooms": 3.0,
+   "price_lakh": 92.0
+  },
+  {
+   "city": "Kalyan",
+   "bedrooms": 4.0,
+   "price_lakh": 295.0
+  },
+  {
+   "city": "Kalyan",
+   "bedrooms": 5.0,
+   "price_lakh": 247.5
+  },
+  {
+   "city": "Kanpur",
+   "bedrooms": 1.0,
+   "price_lakh": 24.0
+  },
+  {
+   "city": "Kanpur",
+   "bedrooms": 2.0,
+   "price_lakh": 42.0
+  },
+  {
+   "city": "Kanpur",
+   "bedrooms": 3.0,
+   "price_lakh": 70.0
+  },
+  {
+   "city": "Kanpur",
+   "bedrooms": 4.0,
+   "price_lakh": 135.0
+  },
+  {
+   "city": "Kanpur",
+   "bedrooms": 5.0,
+   "price_lakh": 140.0
+  },
+  {
+   "city": "Kochi",
+   "bedrooms": 1.0,
+   "price_lakh": 28.0
+  },
+  {
+   "city": "Kochi",
+   "bedrooms": 2.0,
+   "price_lakh": 55.0
+  },
+  {
+   "city": "Kochi",
+   "bedrooms": 3.0,
+   "price_lakh": 85.0
+  },
+  {
+   "city": "Kochi",
+   "bedrooms": 4.0,
+   "price_lakh": 245.5
+  },
+  {
+   "city": "Kochi",
+   "bedrooms": 5.0,
+   "price_lakh": 360.0
+  },
+  {
+   "city": "Kolkata",
+   "bedrooms": 1.0,
+   "price_lakh": 28.4
+  },
+  {
+   "city": "Kolkata",
+   "bedrooms": 2.0,
+   "price_lakh": 41.2
+  },
+  {
+   "city": "Kolkata",
+   "bedrooms": 3.0,
+   "price_lakh": 59.0
+  },
+  {
+   "city": "Kolkata",
+   "bedrooms": 4.0,
+   "price_lakh": 92.5
+  },
+  {
+   "city": "Kolkata",
+   "bedrooms": 5.0,
+   "price_lakh": 115.0
+  },
+  {
+   "city": "Lucknow",
+   "bedrooms": 1.0,
+   "price_lakh": 24.5
+  },
+  {
+   "city": "Lucknow",
+   "bedrooms": 2.0,
+   "price_lakh": 55.0
+  },
+  {
+   "city": "Lucknow",
+   "bedrooms": 3.0,
+   "price_lakh": 85.0
+  },
+  {
+   "city": "Lucknow",
+   "bedrooms": 4.0,
+   "price_lakh": 142.5
+  },
+  {
+   "city": "Lucknow",
+   "bedrooms": 5.0,
+   "price_lakh": 140.0
+  },
+  {
+   "city": "Mohali",
+   "bedrooms": 1.0,
+   "price_lakh": 20.0
+  },
+  {
+   "city": "Mohali",
+   "bedrooms": 2.0,
+   "price_lakh": 40.3
+  },
+  {
+   "city": "Mohali",
+   "bedrooms": 3.0,
+   "price_lakh": 72.0
+  },
+  {
+   "city": "Mohali",
+   "bedrooms": 4.0,
+   "price_lakh": 190.0
+  },
+  {
+   "city": "Mohali",
+   "bedrooms": 5.0,
+   "price_lakh": 150.0
+  },
+  {
+   "city": "Mumbai",
+   "bedrooms": 1.0,
+   "price_lakh": 70.2
+  },
+  {
+   "city": "Mumbai",
+   "bedrooms": 2.0,
+   "price_lakh": 112.0
+  },
+  {
+   "city": "Mumbai",
+   "bedrooms": 3.0,
+   "price_lakh": 166.0
+  },
+  {
+   "city": "Mumbai",
+   "bedrooms": 4.0,
+   "price_lakh": 350.0
+  },
+  {
+   "city": "Mumbai",
+   "bedrooms": 5.0,
+   "price_lakh": 630.5
+  },
+  {
+   "city": "Noida",
+   "bedrooms": 1.0,
+   "price_lakh": 28.5
+  },
+  {
+   "city": "Noida",
+   "bedrooms": 2.0,
+   "price_lakh": 61.8
+  },
+  {
+   "city": "Noida",
+   "bedrooms": 3.0,
+   "price_lakh": 105.0
+  },
+  {
+   "city": "Noida",
+   "bedrooms": 4.0,
+   "price_lakh": 198.5
+  },
+  {
+   "city": "Noida",
+   "bedrooms": 5.0,
+   "price_lakh": 450.0
+  },
+  {
+   "city": "Patna",
+   "bedrooms": 1.0,
+   "price_lakh": 40.0
+  },
+  {
+   "city": "Patna",
+   "bedrooms": 2.0,
+   "price_lakh": 56.0
+  },
+  {
+   "city": "Patna",
+   "bedrooms": 3.0,
+   "price_lakh": 79.3
+  },
+  {
+   "city": "Patna",
+   "bedrooms": 4.0,
+   "price_lakh": 125.5
+  },
+  {
+   "city": "Patna",
+   "bedrooms": 5.0,
+   "price_lakh": 120.0
+  },
+  {
+   "city": "Pune",
+   "bedrooms": 1.0,
+   "price_lakh": 33.5
+  },
+  {
+   "city": "Pune",
+   "bedrooms": 2.0,
+   "price_lakh": 68.0
+  },
+  {
+   "city": "Pune",
+   "bedrooms": 3.0,
+   "price_lakh": 135.5
+  },
+  {
+   "city": "Pune",
+   "bedrooms": 4.0,
+   "price_lakh": 330.0
+  },
+  {
+   "city": "Pune",
+   "bedrooms": 5.0,
+   "price_lakh": 392.5
+  },
+  {
+   "city": "Ranchi",
+   "bedrooms": 1.0,
+   "price_lakh": 23.7
+  },
+  {
+   "city": "Ranchi",
+   "bedrooms": 2.0,
+   "price_lakh": 42.0
+  },
+  {
+   "city": "Ranchi",
+   "bedrooms": 3.0,
+   "price_lakh": 60.6
+  },
+  {
+   "city": "Ranchi",
+   "bedrooms": 4.0,
+   "price_lakh": 140.0
+  },
+  {
+   "city": "Ranchi",
+   "bedrooms": 5.0,
+   "price_lakh": 175.0
+  },
+  {
+   "city": "Sonipat",
+   "bedrooms": 1.0,
+   "price_lakh": 14.2
+  },
+  {
+   "city": "Sonipat",
+   "bedrooms": 2.0,
+   "price_lakh": 32.0
+  },
+  {
+   "city": "Sonipat",
+   "bedrooms": 3.0,
+   "price_lakh": 54.2
+  },
+  {
+   "city": "Sonipat",
+   "bedrooms": 4.0,
+   "price_lakh": 80.0
+  },
+  {
+   "city": "Sonipat",
+   "bedrooms": 5.0,
+   "price_lakh": 132.5
+  },
+  {
+   "city": "Surat",
+   "bedrooms": 1.0,
+   "price_lakh": 20.0
+  },
+  {
+   "city": "Surat",
+   "bedrooms": 2.0,
+   "price_lakh": 42.4
+  },
+  {
+   "city": "Surat",
+   "bedrooms": 3.0,
+   "price_lakh": 77.0
+  },
+  {
+   "city": "Surat",
+   "bedrooms": 4.0,
+   "price_lakh": 210.0
+  },
+  {
+   "city": "Surat",
+   "bedrooms": 5.0,
+   "price_lakh": 349.0
+  },
+  {
+   "city": "Thane",
+   "bedrooms": 1.0,
+   "price_lakh": 44.3
+  },
+  {
+   "city": "Thane",
+   "bedrooms": 2.0,
+   "price_lakh": 97.0
+  },
+  {
+   "city": "Thane",
+   "bedrooms": 3.0,
+   "price_lakh": 190.0
+  },
+  {
+   "city": "Thane",
+   "bedrooms": 4.0,
+   "price_lakh": 325.0
+  },
+  {
+   "city": "Thane",
+   "bedrooms": 5.0,
+   "price_lakh": 450.0
+  },
+  {
+   "city": "Vadodara",
+   "bedrooms": 1.0,
+   "price_lakh": 16.9
+  },
+  {
+   "city": "Vadodara",
+   "bedrooms": 2.0,
+   "price_lakh": 31.5
+  },
+  {
+   "city": "Vadodara",
+   "bedrooms": 3.0,
+   "price_lakh": 55.0
+  },
+  {
+   "city": "Vadodara",
+   "bedrooms": 4.0,
+   "price_lakh": 98.0
+  },
+  {
+   "city": "Vadodara",
+   "bedrooms": 5.0,
+   "price_lakh": 150.0
+  },
+  {
+   "city": "Vijayawada",
+   "bedrooms": 1.0,
+   "price_lakh": 23.2
+  },
+  {
+   "city": "Vijayawada",
+   "bedrooms": 2.0,
+   "price_lakh": 38.0
+  },
+  {
+   "city": "Vijayawada",
+   "bedrooms": 3.0,
+   "price_lakh": 68.0
+  },
+  {
+   "city": "Vijayawada",
+   "bedrooms": 4.0,
+   "price_lakh": 120.0
+  },
+  {
+   "city": "Vijayawada",
+   "bedrooms": 5.0,
+   "price_lakh": 187.5
+  },
+  {
+   "city": "Visakhapatnam",
+   "bedrooms": 1.0,
+   "price_lakh": 33.0
+  },
+  {
+   "city": "Visakhapatnam",
+   "bedrooms": 2.0,
+   "price_lakh": 43.0
+  },
+  {
+   "city": "Visakhapatnam",
+   "bedrooms": 3.0,
+   "price_lakh": 80.0
+  },
+  {
+   "city": "Visakhapatnam",
+   "bedrooms": 4.0,
+   "price_lakh": 225.0
+  },
+  {
+   "city": "Zirakpur",
+   "bedrooms": 1.0,
+   "price_lakh": 21.9
+  },
+  {
+   "city": "Zirakpur",
+   "bedrooms": 2.0,
+   "price_lakh": 40.0
+  },
+  {
+   "city": "Zirakpur",
+   "bedrooms": 3.0,
+   "price_lakh": 65.0
+  },
+  {
+   "city": "Zirakpur",
+   "bedrooms": 4.0,
+   "price_lakh": 103.0
+  },
+  {
+   "city": "Zirakpur",
+   "bedrooms": 5.0,
+   "price_lakh": 119.5
+  }
+ ],
+ "localities": {
+  "Bengaluru": [
+   "5th Phase",
+   "Abbigere",
+   "Adugodi",
+   "Anagalapura Near Hennur Main Road",
+   "Anekal City",
+   "Anjanapura",
+   "Attibele",
+   "Avalahalli Off Sarjapur Road",
+   "BEML Layout 5th Stage",
+   "Babusa Palya",
+   "Banashankari",
+   "Banaswadi",
+   "Basaveswarnagar",
+   "Begur",
+   "Bellandur",
+   "Bilekahalli",
+   "Bommanahalli",
+   "Bommasandra",
+   "Brookefield",
+   "Budigere Cross",
+   "CV Raman Nagar",
+   "Carmelaram",
+   "Chandapura",
+   "Chandapura Anekal Road",
+   "Chikkagubbi on Hennur Main Road",
+   "Chikkalasandra",
+   "Dasarahalli on Tumkur Road",
+   "Devanahalli",
+   "Doddanekundi",
+   "Electronic City Phase 1",
+   "Electronic City Phase 2",
+   "Electronics City",
+   "Gottigere",
+   "HBR Layout",
+   "Harlur",
+   "Hebbal",
+   "Hennur",
+   "Hennur Road",
+   "Horamavu",
+   "Hosa Road",
+   "Hulimavu",
+   "ITPL",
+   "JP Nagar Phase 1",
+   "JP Nagar Phase 3",
+   "JP Nagar Phase 4",
+   "JP Nagar Phase 5",
+   "JP Nagar Phase 7",
+   "JP Nagar Phase 8",
+   "JP Nagar Phase 9",
+   "Jakkur",
+   "Jalahalli",
+   "Jayanagar",
+   "Jigani",
+   "Junnasandra",
+   "KPC Layout",
+   "Kadugodi",
+   "Kalyan Nagar",
+   "Kammanahalli",
+   "Kanakapura",
+   "Kanakapura Road Beyond Nice Ring Road",
+   "Kannamangala",
+   "Kannur on Thanisandra Main Road",
+   "Kasavanahalli",
+   "Kengeri",
+   "Kodigehalli",
+   "Kogilu",
+   "Kogilu Road Near Yelahanka",
+   "Konanakunte",
+   "Koppa Begur Road",
+   "Koramangala",
+   "Krishnarajapura",
+   "Kudlu",
+   "Kumaraswamy Layout",
+   "Kumbalgodu",
+   "Manyata Tech Park Nagawara",
+   "Marathahalli",
+   "Marsur",
+   "Muneshwara Nagar",
+   "Nagarbhavi",
+   "Narayanaghatta",
+   "Narayanapura on Hennur Main Road",
+   "Nayandahalli",
+   "Near Peenya Industrial Area",
+   "Nelamangala",
+   "Poorna Pragna Layout",
+   "Poornapragna Housing Society Layout",
+   "RR Nagar",
+   "Raja Rajeshwari Nagar 5th Stage",
+   "Rajajinagar",
+   "Rajarajeshwari nagar",
+   "Ramamurthy Nagar",
+   "Richmond Town",
+   "Sahakar Nagar",
+   "Sarjapur",
+   "Sarjapur Attibele",
+   "Sarjapur Road",
+   "Sarjapur Road Till Wipro",
+   "Sarjapur Road Wipro To Railway Crossing",
+   "Singasandra",
+   "Subramanyapura",
+   "Talaghattapura",
+   "Thanisandra",
+   "Thanisandra Main Road",
+   "Uttarahalli",
+   "Uttarahalli Hobli",
+   "Uttarahalli Main Road",
+   "Varthur",
+   "Whitefield",
+   "Whitefield Hope Farm Junction",
+   "Yelahanka",
+   "Yeshwantpur",
+   "sarjapura attibele road"
+  ],
+  "Chennai": [
+   "Adambakkam",
+   "Adyar",
+   "Alwarpet",
+   "Ambattur",
+   "Anna Nagar",
+   "Avadi",
+   "Ayanambakkam",
+   "Ayapakkam",
+   "Choolaimedu",
+   "Chromepet",
+   "East Tambaram",
+   "Egmore",
+   "Gowrivakkam",
+   "Guduvancheri",
+   "Guindy",
+   "Iyappanthangal",
+   "Iyyappanthangal",
+   "Kanathur Reddikuppam",
+   "Karapakkam",
+   "Kattankulathur",
+   "Kattupakkam",
+   "Kelambakkam",
+   "Kilkattalai",
+   "Kilpauk",
+   "Kolapakkam",
+   "Kolathur",
+   "Korattur",
+   "Kovilambakkam",
+   "Kovur",
+   "Koyambedu",
+   "Kundrathur",
+   "Madambakkam",
+   "Madhavaram",
+   "Madipakkam",
+   "Maduravoyal",
+   "Manapakkam",
+   "Manikandan Nagar",
+   "Maraimalai Nagar",
+   "Medavakkam",
+   "Mevalurkuppam",
+   "Mogappair",
+   "Moolacheri",
+   "Mugalivakkam",
+   "Nanmangalam",
+   "Navallur",
+   "Nungambakkam",
+   "Padur",
+   "Pallavaram",
+   "Pallikaranai",
+   "Pammal",
+   "Peerakankaranai",
+   "Perambur",
+   "Perumbakkam",
+   "Perungalathur",
+   "Perungudi",
+   "Poonamallee",
+   "Porur",
+   "Pozhichalur",
+   "Raja Annamalai Puram",
+   "Rajakilpakkam",
+   "Saidapet",
+   "Selaiyur",
+   "Sembakkam",
+   "Sholinganallur",
+   "Singaperumal Koil",
+   "Sithalapakkam",
+   "Sunnambu Kolathur S Kolathur",
+   "T Nagar",
+   "Tambaram Sanatoruim",
+   "Thalambur",
+   "Thiruvanmiyur",
+   "Thiruverkadu",
+   "Thoraipakkam",
+   "Thoraipakkam OMR",
+   "Tiruvottiyur",
+   "Ullagaram",
+   "Vadapalani",
+   "Valasaravakkam",
+   "Vanagaram",
+   "Vandalur",
+   "Velachery",
+   "Velappanchavadi",
+   "Vengaivasal",
+   "Virugambakkam",
+   "tambaram west"
+  ],
+  "Delhi": [
+   "Alaknanda",
+   "Bharat Vihar",
+   "Bindapur",
+   "Burari",
+   "Chattarpur",
+   "Chittaranjan Park",
+   "Delhi",
+   "Delhi Meerut Expressway",
+   "Dwarka Mor",
+   "Dwarka More",
+   "Govindpuri",
+   "Greater Kailash",
+   "Hari Nagar",
+   "Jamia Nagar",
+   "Jasola",
+   "Jasola Vihar Sector 8 Road",
+   "Kalkaji",
+   "Kamla Nagar",
+   "Kundli",
+   "Mahavir Enclave",
+   "Mansa Ram Park",
+   "Mayur Vihar",
+   "Mayur Vihar II",
+   "Model Town",
+   "Munirka",
+   "New Ashok Nagar",
+   "Noida",
+   "Noida Road",
+   "Okhla",
+   "Om Nagar",
+   "Om Vihar",
+   "Palam",
+   "Paschim Vihar",
+   "Pitampura",
+   "Preet Vihar",
+   "Rohini Sector 9",
+   "Rohini sector 24",
+   "Roop Nagar",
+   "Sainik Farms",
+   "Saket",
+   "Sarita Vihar",
+   "Sector 10 Dwarka",
+   "Sector 11 Dwarka",
+   "Sector 12 Dwarka",
+   "Sector 13 Dwarka",
+   "Sector 13 Rohini",
+   "Sector 18A Dwarka",
+   "Sector 19 Dwarka",
+   "Sector 2 Dwarka",
+   "Sector 22 Dwarka",
+   "Sector 22 Rohini",
+   "Sector 23 Dwarka",
+   "Sector 23 Rohini",
+   "Sector 24 Rohini",
+   "Sector 3 Dwarka",
+   "Sector 4 Dwarka",
+   "Sector 5 Dwarka",
+   "Sector 6 Dwarka",
+   "Sector 7 Dwarka",
+   "Sector 9 Dwarka",
+   "Sector-18 Dwarka",
+   "Shahdara",
+   "Shanti Park Dwarka",
+   "Shastri Nagar",
+   "Uttam Nagar",
+   "Vasant Kunj",
+   "Vikas Puri",
+   "West End",
+   "West Punjabi Bagh",
+   "nawada"
+  ],
+  "Hyderabad": [
+   "Alwal",
+   "Appa Junction",
+   "Appa Junction Peerancheru",
+   "Attapur",
+   "Bachupally",
+   "Balanagar",
+   "Bandlaguda Jagir",
+   "Banjara Hills",
+   "Beeramguda",
+   "Chandanagar",
+   "East Marredpally",
+   "Gachibowli",
+   "Gajularamaram",
+   "Gajulramaram Kukatpally",
+   "Gandipet",
+   "Hitech City",
+   "Jubilee Hills",
+   "Kokapet",
+   "Kollur Road",
+   "Kompally",
+   "Kondapur",
+   "Krishna Reddy Pet",
+   "Kukatpally",
+   "LB Nagar",
+   "Madhapur",
+   "Madinaguda",
+   "Malkajgiri",
+   "Mallapur",
+   "Manikonda",
+   "Miyapur",
+   "Nacharam",
+   "Nagole",
+   "Nallagandla Gachibowli",
+   "Nallakunta",
+   "Nanakramguda",
+   "Narsingi",
+   "Nizampet",
+   "Patancheru",
+   "Pragathi Nagar Kukatpally",
+   "Puppalaguda",
+   "Sanath Nagar",
+   "Serilingampally",
+   "Shaikpet",
+   "Tellapur",
+   "West Marredpally"
+  ],
+  "Kolkata": [
+   "Airport",
+   "Alipore",
+   "Baghajatin",
+   "Baguiati",
+   "Ballygunge",
+   "Bansdroni",
+   "Baranagar",
+   "Barasat",
+   "Barisha Purba Para Road",
+   "Barrackpore",
+   "Behala",
+   "Belghoria",
+   "Bhawanipur",
+   "Biren Roy Road",
+   "Bramhapur",
+   "Budge Budge",
+   "Chandannagar",
+   "Chinar Park",
+   "Dhakuria",
+   "Dhakuria Station Road",
+   "Dum Dum",
+   "Durgapur",
+   "E M Bypass",
+   "East Kolkata Township",
+   "Elgin",
+   "Ganguly Bagan",
+   "Garia",
+   "Gariahat",
+   "Haltu",
+   "Hooghly Chinsurah",
+   "Howrah",
+   "Hussainpur",
+   "International Airport",
+   "Jadavpur",
+   "Jessore Road",
+   "Jodhpur Park",
+   "Joka",
+   "Kaikhali",
+   "Kalighat",
+   "Kamalgazi",
+   "Kankurgachi",
+   "Kasba",
+   "Keshtopur",
+   "Khardah",
+   "Konnagar",
+   "Lake Gardens",
+   "Lake Town",
+   "Madhyamgram",
+   "Madurdaha",
+   "Madurdaha Hussainpur",
+   "Maheshtala",
+   "Maniktala",
+   "Mankundu",
+   "Mukundapur",
+   "N S C Bose Road  Narendrapur",
+   "Naktala",
+   "Narendrapur",
+   "Nayabad",
+   "Netaji Nagar",
+   "New Alipore",
+   "New Town",
+   "North Dumdum",
+   "Paschim Putiary",
+   "Patuli",
+   "Picnic Garden",
+   "Prince Anwar Shah Connector",
+   "Rajarhat",
+   "Rajpur",
+   "Rishra",
+   "Salt Lake City",
+   "Santoshpur",
+   "Sarsuna",
+   "Sodepur",
+   "Sonarpur",
+   "Tagore Park",
+   "Tangra",
+   "Tiljala",
+   "Tollygunge",
+   "Topsia",
+   "Topsia Road",
+   "Ultadanga",
+   "Uttarpara Kotrung",
+   "birati",
+   "kalikapur",
+   "south dum dum"
+  ],
+  "Mumbai": [
+   "Airoli",
+   "Ambernath East",
+   "Ambernath West",
+   "Andheri",
+   "Andheri East",
+   "Andheri West",
+   "Badlapur East",
+   "Bandra East",
+   "Bandra West",
+   "Belapur",
+   "Bhandup West",
+   "Bhayandar East",
+   "Bhiwandi",
+   "Boisar",
+   "Borivali East",
+   "Borivali West",
+   "Chembur",
+   "Chembur East",
+   "Dahisar",
+   "Dahisar East",
+   "Dahisar West",
+   "Dattapada",
+   "Dombivali",
+   "Dombivali East",
+   "Dombivli (West)",
+   "Dronagiri",
+   "Ghansoli",
+   "Ghatkopar",
+   "Ghatkopar West",
+   "Goregaon",
+   "Goregaon East",
+   "Goregaon West",
+   "Jogeshwari West",
+   "Juhu",
+   "Kalwa",
+   "Kalyan East",
+   "Kalyan West",
+   "Kamothe",
+   "Kandivali East",
+   "Kandivali West",
+   "Kanjurmarg",
+   "Karanjade",
+   "Karjat",
+   "Khar West",
+   "Kharghar",
+   "Kolshet Road",
+   "Koper Khairane",
+   "Koproli",
+   "Kurla",
+   "Kurla West",
+   "Magathane",
+   "Majiwada",
+   "Malad East",
+   "Malad West",
+   "Mira Road East",
+   "Mira Road and Beyond",
+   "Mulund East",
+   "Mulund West",
+   "Naigaon East",
+   "Nala Sopara",
+   "Nalasopara East",
+   "Nalasopara West",
+   "Nerul",
+   "Palghar",
+   "Panvel",
+   "Parel",
+   "Powai",
+   "Sanpada",
+   "Santacruz East",
+   "Santacruz West",
+   "Seawoods",
+   "Sector 17 Ulwe",
+   "Sector 19 Kharghar",
+   "Sector 20 Kharghar",
+   "Sector-18 Ulwe",
+   "Taloja",
+   "Thakur Village",
+   "Thane",
+   "Thane West",
+   "Titwala",
+   "Ulwe",
+   "Vasai",
+   "Vasai West",
+   "Vasai east",
+   "Vashi",
+   "Ville Parle East",
+   "Virar",
+   "Virar East",
+   "Virar West",
+   "Wadala",
+   "Wadala East Wadala",
+   "Worli",
+   "matunga east",
+   "mumbai"
+  ]
+ },
+ "top_localities": [
+  {
+   "city": "Mumbai",
+   "locality": "Santacruz West",
+   "listings": 13,
+   "median_pps": 27083.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Worli",
+   "listings": 18,
+   "median_pps": 26723.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Parel",
+   "listings": 33,
+   "median_pps": 25144.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Santacruz East",
+   "listings": 19,
+   "median_pps": 24342.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Ville Parle East",
+   "listings": 71,
+   "median_pps": 23529.0
+  },
+  {
+   "city": "Bengaluru",
+   "locality": "Richmond Town",
+   "listings": 37,
+   "median_pps": 22757.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "matunga east",
+   "listings": 16,
+   "median_pps": 22661.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Dahisar West",
+   "listings": 22,
+   "median_pps": 21430.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Wadala East Wadala",
+   "listings": 13,
+   "median_pps": 21063.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Andheri East",
+   "listings": 90,
+   "median_pps": 19524.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Wadala",
+   "listings": 23,
+   "median_pps": 18750.0
+  },
+  {
+   "city": "Chennai",
+   "locality": "Raja Annamalai Puram",
+   "listings": 30,
+   "median_pps": 18366.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Chembur",
+   "listings": 165,
+   "median_pps": 17880.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Kolshet Road",
+   "listings": 10,
+   "median_pps": 17805.0
+  },
+  {
+   "city": "Mumbai",
+   "locality": "Kanjurmarg",
+   "listings": 28,
+   "median_pps": 17727.0
+  }
+ ],
+ "importance": {
+  "Area": 0.289,
+  "Locality": 0.131,
+  "City": 0.076,
+  "Bathrooms": 0.044,
+  "Amenities": 0.01,
+  "Bedrooms": 0.007,
+  "Resale": 0.002
+ },
+ "sources": {
+  "listings_file": 54983,
+  "city_files": 27571
+ }
+}
